@@ -1,0 +1,74 @@
+﻿@model fakeLook_models.Models.Post
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Post</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageSorce" class="control-label"></label>
+                <input asp-for="ImageSorce" class="form-control" />
+                <span asp-validation-for="ImageSorce" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="X_Position" class="control-label"></label>
+                <input asp-for="X_Position" class="form-control" />
+                <span asp-validation-for="X_Position" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Y_Position" class="control-label"></label>
+                <input asp-for="Y_Position" class="form-control" />
+                <span asp-validation-for="Y_Position" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Z_Position" class="control-label"></label>
+                <input asp-for="Z_Position" class="form-control" />
+                <span asp-validation-for="Z_Position" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Date" class="control-label"></label>
+                <input asp-for="Date" class="form-control" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserId" class="control-label"></label>
+                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsEdited" /> @Html.DisplayNameFor(model => model.IsEdited)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="PermissionLevel" class="control-label"></label>
+                <input asp-for="PermissionLevel" class="form-control" />
+                <span asp-validation-for="PermissionLevel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

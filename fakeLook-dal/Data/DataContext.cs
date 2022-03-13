@@ -10,6 +10,12 @@ namespace fakeLook_dal.Data
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<Block> Blocks { get; set; }
+
+        public DbSet<Circle> Circles { get; set; }
+
+        public DbSet<CircleUser> CircleUsers { get; set; }
+
         public DbSet<Like> Likes { get; set; }
         public DbSet<UserTaggedComment> UserTaggedComments { get; set; }
         public DbSet<UserTaggedPost> UserTaggedPosts { get; set; }
@@ -60,7 +66,7 @@ namespace fakeLook_dal.Data
                 var users = new User[amount];
                 for (int i = 0; i < amount; i++)
                 {
-                    users[i] = new User() { Id = i + 1, Address = address, Name = name + (i + 1).ToString(), Password = password };
+                    users[i] = new User() { Id = i + 1, Address = address, Password = password };
                 }
                 SeedDb(users);
             }

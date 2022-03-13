@@ -17,10 +17,14 @@ namespace fakeLook_models.Models
         public double Z_Position { get; set; }
         public DateTime Date { get; set; }
 
+        public int UserId { get; set; }
+        public bool IsEdited { get; set; }
+        public int PermissionLevel { get; set; }
+
         /* EF Relations */
         public virtual ICollection<Like> Likes { get; set; }
         public virtual User User { get; set; }
-        public int UserId { get; set; }
+       
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<Tag> Tags { get; set; }
         public virtual ICollection<UserTaggedPost> UserTaggedPost { get; set; }
