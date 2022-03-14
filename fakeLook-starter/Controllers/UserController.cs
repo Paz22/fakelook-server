@@ -51,6 +51,13 @@ namespace fakeLook_starter.Controllers
             _repo.Edit(user);
         }
 
+        [HttpPost]
+        [Route("/Login")]
+        public User Login(User user)
+        {
+           return _repo.getByUser(user);
+        }
+
         // DELETE api/<User>/5
         [HttpDelete("{id}")]
         public void DeleteUser(int id)
