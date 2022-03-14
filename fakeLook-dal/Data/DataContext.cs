@@ -80,7 +80,7 @@ namespace fakeLook_dal.Data
                 {
                     posts[i] = new Post()
                     {
-                        Id = new Guid(),
+                        Id = Guid.NewGuid(),
                         UserId = i + 1,
                         ImageSorce = src,
                         Description = description + (i + 1).ToString(),
