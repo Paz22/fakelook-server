@@ -46,7 +46,7 @@ namespace fakeLook_starter.Controllers
 
         // PUT api/<User>/5
         [HttpPut("{id}")]
-        public void Put(int id,User user)
+        public void Put(User user)
         {
             _repo.Edit(user);
         }

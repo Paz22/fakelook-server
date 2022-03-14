@@ -66,12 +66,13 @@ namespace fakeLook_starter.Repositories
             }
             _context.Entry<User>(item).CurrentValues.SetValues(item);
             await _context.SaveChangesAsync();
+            if (!UserExists(item.Id))
+            {
+                    //TODO
+            }
             return item;
-        if (!UserExists(item.Id))
-        {
-                //TODO
-        }
-          
+
+
         }
 
 
