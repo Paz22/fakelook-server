@@ -12,46 +12,48 @@ namespace fakeLook_starter.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PostsController : ControllerBase
+    public class UserController : ControllerBase
     {
-        private IPostRepository _repo;
 
+        private IUserRepository _repo;
 
-        public PostsController(DataContext context)
+        public UserController(DataContext context)
         {
-            _repo = new PostRepository(context);
+            _repo = new UserRepository(context);
         }
-        // GET: api/<PostsController>
+
+        // GET: api/<User>
         [HttpGet]
-        public IEnumerable<Post> GetAll()
+        public IEnumerable<User> GetAllUsers()
         {
             return _repo.GetAll();
         }
 
-        // GET api/<PostsController>/5
+        // GET api/<User>/5
         [HttpGet("{id}")]
-        public Post GetById(Guid id)
+        public User GetById(Guid id)
         {
             return _repo.GetById(id);
+
         }
 
-        // POST api/<PostsController>
+        // POST api/<User>
         [HttpPost]
-        public void Post( Post post)
+        public void Post(User user)
         {
-            _repo.Add(post);
+            _repo.Add(user);
         }
 
-        // PUT api/<PostsController>/5
+        // PUT api/<User>/5
         [HttpPut("{id}")]
-        public void Put( Post post)
+        public void Put(int id,User user)
         {
-            _repo.Edit(post);
+            _repo.Edit(user);
         }
 
-        // DELETE api/<PostsController>/5
+        // DELETE api/<User>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void DeleteUser(int id)
         {
             _repo.Delete(id);
         }

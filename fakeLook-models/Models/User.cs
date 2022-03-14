@@ -8,7 +8,7 @@ namespace fakeLook_models.Models
 {
     public class User
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         public string UserName { get; set; }
         public string FirstName { get; set; }

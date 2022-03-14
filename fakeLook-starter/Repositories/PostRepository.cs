@@ -23,8 +23,21 @@ namespace fakeLook_starter.Repositories
             return res.Entity;
         }
 
+        public async Task<Post> Delete(int id)
+        {
+            var post = await _context.Posts.FindAsync(id);
+            if (post == null)
+            {
+                //TODO
+            }
+            _context.Posts.Remove(post);
+            await _context.SaveChangesAsync();
+            return post;
+        }
+
         public async Task<Post> Edit(Post item)
         {
+            item.IsEdited = true;
             var res = _context.Posts.Update(item);
             await _context.SaveChangesAsync();
             return res.Entity;
@@ -35,12 +48,13 @@ namespace fakeLook_starter.Repositories
             return _context.Posts.ToList();
         }
 
-        public Post GetById(int id)
+        public Post GetById(Guid id)
         {
             return _context.Posts.SingleOrDefault(p => p.Id == id);
         }
 
-        public ICollection<Post> GetByPredicate(Func<Post,bool> predicate)
+
+        public ICollection<Post> GetByPredicate(Func<Post, bool> predicate)
         {
             return _context.Posts.Where(predicate).ToList();
         }
