@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace fakeLook_starter.Interfaces
-{ //PAZ
+{ 
     public interface IRepository<T>
     {
         public Task<T> Add(T item);

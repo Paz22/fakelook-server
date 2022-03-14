@@ -38,6 +38,7 @@ namespace fakeLook_starter
             #region Setting DB configuration
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
+            services.AddScoped<IPostRepository, PostRepository>();
             #endregion
             #region Setting cors policy
             services.AddCors(options =>
@@ -60,6 +61,7 @@ namespace fakeLook_starter
             data.Database.EnsureCreated();
             if (env.IsDevelopment())
             {
+                
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "fakeLook_starter v1"));
@@ -68,6 +70,8 @@ namespace fakeLook_starter
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(_MyAllowSpecificOrigin);
 
             app.UseAuthorization();
 
