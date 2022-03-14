@@ -34,11 +34,14 @@ namespace fakeLook_starter
             services.AddControllers();
             #region Setting repository and services interfaces
             services.AddTransient<IPostRepository, PostRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
             #endregion
             #region Setting DB configuration
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
             services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<IUserRepository,UserRepository>();
+            services.AddHttpContextAccessor();
             #endregion
             #region Setting cors policy
             services.AddCors(options =>
