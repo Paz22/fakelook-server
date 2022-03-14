@@ -10,22 +10,22 @@ using fakeLook_models.Models;
 
 namespace fakeLook_starter.Controllers
 {
-    public class BlocksController : Controller
+    public class UsersController : Controller
     {
         private readonly DataContext _context;
 
-        public BlocksController(DataContext context)
+        public UsersController(DataContext context)
         {
             _context = context;
         }
 
-        // GET: Blocks
+        // GET: Users
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Blocks.ToListAsync());
+            return View(await _context.Users.ToListAsync());
         }
 
-        // GET: Blocks/Details/5
+        // GET: Users/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace fakeLook_starter.Controllers
                 return NotFound();
             }
 
-            var block = await _context.Blocks
+            var user = await _context.Users
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (block == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return View(block);
+            return View(user);
         }
 
-        // GET: Blocks/Create
+        // GET: Users/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Blocks/Create
+        // POST: Users/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,BlockerUserId,BlockedUserId")] Block block)
+        public async Task<IActionResult> Create([Bind("Id,UserName,LastName,Email,BirthDate,ProfilePic,Password,Address,WorkPlace")] User user)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(block);
+                _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(block);
+            return View(user);
         }
 
-        // GET: Blocks/Edit/5
+        // GET: Users/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace fakeLook_starter.Controllers
                 return NotFound();
             }
 
-            var block = await _context.Blocks.FindAsync(id);
-            if (block == null)
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
-            return View(block);
+            return View(user);
         }
 
-        // POST: Blocks/Edit/5
+        // POST: Users/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlockerUserId,BlockedUserId")] Block block)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserName,LastName,Email,BirthDate,ProfilePic,Password,Address,WorkPlace")] User user)
         {
-            if (id != block.Id)
+            if (id != user.Id)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace fakeLook_starter.Controllers
             {
                 try
                 {
-                    _context.Update(block);
+                    _context.Update(user);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BlockExists(block.Id))
+                    if (!UserExists(user.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace fakeLook_starter.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(block);
+            return View(user);
         }
 
-        // GET: Blocks/Delete/5
+        // GET: Users/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +124,30 @@ namespace fakeLook_starter.Controllers
                 return NotFound();
             }
 
-            var block = await _context.Blocks
+            var user = await _context.Users
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (block == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return View(block);
+            return View(user);
         }
 
-        // POST: Blocks/Delete/5
+        // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var block = await _context.Blocks.FindAsync(id);
-            _context.Blocks.Remove(block);
+            var user = await _context.Users.FindAsync(id);
+            _context.Users.Remove(user);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BlockExists(int id)
+        private bool UserExists(int id)
         {
-            return _context.Blocks.Any(e => e.Id == id);
+            return _context.Users.Any(e => e.Id == id);
         }
     }
 }
