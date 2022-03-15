@@ -16,10 +16,12 @@ namespace fakeLook_starter.Controllers
     {
 
         private IUserRepository _repo;
+        private ITokenService _tokenService { get; }
 
-        public UserController(DataContext context)
+        public UserController(DataContext context, ITokenService tokenService)
         {
             _repo = new UserRepository(context);
+            _tokenService = tokenService;
         }
 
         // GET: api/<User>
@@ -47,9 +49,10 @@ namespace fakeLook_starter.Controllers
         // POST api/<User>
         [HttpPost]
         [Route("/Register")]
-        public void Register(User user)
+        public  IActionResult Register(User user)
         {
             _repo.Add(user);
+            return Login(user);
         }
 
         // PUT api/<User>/5
@@ -61,9 +64,16 @@ namespace fakeLook_starter.Controllers
 
         [HttpPost]
         [Route("/Login")]
-        public User Login(User user)
+        public IActionResult Login(User user)
         {
-            return _repo.getByUser(user);
+            var dbUser = _repo.getByUser(user);
+            if (dbUser == null)
+            {
+                return Problem("User can not be found");
+            }
+            var token = _tokenService.CreateToken(dbUser);
+            return Ok(new { token });
+
         }
 
         // DELETE api/<User>/5
