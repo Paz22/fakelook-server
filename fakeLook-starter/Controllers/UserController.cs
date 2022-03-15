@@ -74,6 +74,7 @@ namespace fakeLook_starter.Controllers
             var token = _tokenService.CreateToken(dbUser);
             return Ok(new { token });
 
+
         }
 
         // DELETE api/<User>/5
