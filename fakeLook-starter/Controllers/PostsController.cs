@@ -2,6 +2,7 @@
 using fakeLook_models.Models;
 using fakeLook_starter.Interfaces;
 using fakeLook_starter.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,26 +11,31 @@ using System.Collections.Generic;
 
 namespace fakeLook_starter.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/PostsAPI")]
     [ApiController]
+    [Authorize]
     public class PostsController : ControllerBase
     {
         private IPostRepository _repo;
 
-        public PostsController(DataContext context)
+        public PostsController(IPostRepository postRepo)
         {
-            _repo = new PostRepository(context);
+            _repo = postRepo;
         }
-        // GET: api/<PostsController>
+
+
+        //GET: api/<PostsController>
         [HttpGet]
+        [Route("GetAll")]
         public IEnumerable<Post> GetAll()
         {
             return _repo.GetAll();
         }
 
         // GET api/<PostsController>/5
-        [HttpGet("{id}")]
-        public Post GetById(Guid id)
+        [HttpGet()]
+        [Route("GetById")]
+        public Post GetById(int id)
         {
             return _repo.GetById(id);
         }
@@ -50,7 +56,7 @@ namespace fakeLook_starter.Controllers
 
         // DELETE api/<PostsController>/5
         [HttpDelete("{id}")]
-        public void Delete(Guid id)
+        public void Delete(int id)
         {
             _repo.Delete(id);
         }

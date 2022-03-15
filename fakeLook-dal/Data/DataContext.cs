@@ -66,7 +66,7 @@ namespace fakeLook_dal.Data
                 var users = new User[amount];
                 for (int i = 0; i < amount; i++)
                 {
-                    users[i] = new User() { Id = Guid.NewGuid(), Address = address, Password = password };
+                    users[i] = new User() { Id = i+1, Address = address, Password = password };
                 }
                 SeedDb(users);
             }
@@ -80,7 +80,7 @@ namespace fakeLook_dal.Data
                 {
                     posts[i] = new Post()
                     {
-                        Id = Guid.NewGuid(),
+                        Id = i+1,
                         UserId = i + 1,
                         ImageSorce = src,
                         Description = description + (i + 1).ToString(),

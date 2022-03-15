@@ -1,14 +1,17 @@
-﻿using fakeLook_models.Models;
+﻿
+using fakeLook_models.Models;
 using fakeLook_starter.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace fakeLook_starter.Services
+namespace auth_example.Services
 {
     public class TokenService : ITokenService
     {
@@ -25,7 +28,7 @@ namespace fakeLook_starter.Services
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var claims = new[] {
             new Claim(ClaimTypes.Name, user.Id.ToString()),
-
+            //new Claim(ClaimTypes.Role, user.Role),
         };
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
               _config["Jwt:Issuer"],
@@ -42,5 +45,4 @@ namespace fakeLook_starter.Services
             return tokenHandler.ReadJwtToken(token).Claims.Where(claim => claim.Type == ClaimTypes.Name).Single().Value;
         }
     }
-
 }
