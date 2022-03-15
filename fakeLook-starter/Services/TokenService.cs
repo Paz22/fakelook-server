@@ -1,6 +1,12 @@
 ﻿using fakeLook_models.Models;
 using fakeLook_starter.Interfaces;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
+using System.Text;
 
 namespace fakeLook_starter.Services
 {
@@ -18,8 +24,7 @@ namespace fakeLook_starter.Services
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var claims = new[] {
-            new Claim(ClaimTypes.Name, user.Id),
-            new Claim(ClaimTypes.Role, user.Role),
+            new Claim(ClaimTypes.Name, user.Id.ToString()),
             //new Claim(ClaimTypes.NameIdentifier,
             //Guid.NewGuid().ToString())
         };
