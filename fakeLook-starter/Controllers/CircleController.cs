@@ -1,4 +1,6 @@
-﻿//using Microsoft.AspNetCore.Mvc;
+﻿//using fakeLook_models.Models;
+//using Microsoft.AspNetCore.Mvc;
+//using System.Collections.Generic;
 
 //// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -10,13 +12,13 @@
 //    {
 //        // GET: api/<CircleController>
 //        [HttpGet]
-//        public IEnumerable<string> Get()
+//        public IEnumerable<Circle> Get()
 //        {
-//            return new string[] { "value1", "value2" };
+            
 //        }
 
 //        // GET api/<CircleController>/5
-//        [HttpGet("{id}")]
+//        [HttpGet("Post")]
 //        public string Get(int id)
 //        {
 //            return "value";

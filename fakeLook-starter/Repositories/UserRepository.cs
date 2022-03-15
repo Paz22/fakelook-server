@@ -48,8 +48,7 @@ namespace fakeLook_starter.Repositories
             var res = _context.Users.Add(item);
             await _context.SaveChangesAsync();
             return res.Entity;
-           }          
-              
+           }           
         }
 
         private bool UserExists(Guid id)
@@ -59,12 +58,12 @@ namespace fakeLook_starter.Repositories
 
         public async Task<User> Edit(User item)
         {
-            var temp = _context.Users.SingleOrDefault(u => u.Id == item.Id);
-            if (temp != null)
+            var temp = _context.Users.FirstOrDefault(u => u.Id == item.Id);
+            if (temp == null)
             {
-                _context.Users.Remove(temp);
+                return null;//TODO
             }
-            _context.Entry<User>(item).CurrentValues.SetValues(item);
+            _context.Entry<User>(temp).CurrentValues.SetValues(item);
             await _context.SaveChangesAsync();
             if (!UserExists(item.Id))
             {
@@ -76,12 +75,12 @@ namespace fakeLook_starter.Repositories
         }
 
 
-        public async Task<User> Delete(int id)
+        public async Task<User> Delete(Guid id)
         {
             var user = await _context.Users.FindAsync(id);
             if (user == null)
             {
-                //TODO
+                return user;//TODO
             }
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
