@@ -16,7 +16,6 @@ namespace fakeLook_starter.Controllers
     {
         private IPostRepository _repo;
 
-
         public PostsController(DataContext context)
         {
             _repo = new PostRepository(context);
@@ -43,7 +42,7 @@ namespace fakeLook_starter.Controllers
         }
 
         // PUT api/<PostsController>/5
-        [HttpPut("{id}")]
+        [HttpPut("Post")]
         public void Put( Post post)
         {
             _repo.Edit(post);
@@ -51,7 +50,7 @@ namespace fakeLook_starter.Controllers
 
         // DELETE api/<PostsController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
             _repo.Delete(id);
         }

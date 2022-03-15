@@ -44,8 +44,16 @@ namespace fakeLook_starter.Controllers
             _repo.Add(user);
         }
 
+        // POST api/<User>
+        [HttpPost]
+        [Route("/Register")]
+        public void Register(User user)
+        {
+            _repo.Add(user);
+        }
+
         // PUT api/<User>/5
-        [HttpPut("{id}")]
+        [HttpPut]
         public void Put(User user)
         {
             _repo.Edit(user);
@@ -56,11 +64,12 @@ namespace fakeLook_starter.Controllers
         public User Login(User user)
         {
            return _repo.getByUser(user);
+
         }
 
         // DELETE api/<User>/5
         [HttpDelete("{id}")]
-        public void DeleteUser(int id)
+        public void DeleteUser(Guid id)
         {
             _repo.Delete(id);
         }

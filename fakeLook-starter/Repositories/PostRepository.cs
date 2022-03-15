@@ -23,7 +23,7 @@ namespace fakeLook_starter.Repositories
             return res.Entity;
         }
 
-        public async Task<Post> Delete(int id)
+        public async Task<Post> Delete(Guid id)
         {
             var post = await _context.Posts.FindAsync(id);
             if (post == null)
