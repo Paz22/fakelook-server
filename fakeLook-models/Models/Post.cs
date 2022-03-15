@@ -9,7 +9,7 @@ namespace fakeLook_models.Models
     public class Post
     {
 
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string Description { get; set; }
         public string ImageSorce { get; set; }
         public double X_Position { get; set; }

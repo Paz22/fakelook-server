@@ -30,7 +30,7 @@ namespace fakeLook_starter.Repositories
             return _context.Users.Where(item => item.Password == user.Password && item.UserName == user.UserName).SingleOrDefault();
         }
 
-        public User GetById(Guid id)
+        public User GetById(int id)
         {
              return (_context.Users.SingleOrDefault(u => u.Id == id));
         }
@@ -43,7 +43,6 @@ namespace fakeLook_starter.Repositories
             }
             else
             {
-            item.Id = Guid.NewGuid();
             item.Password = item.Password.GetHashCode().ToString();
             var res = _context.Users.Add(item);
             await _context.SaveChangesAsync();
@@ -76,7 +75,7 @@ namespace fakeLook_starter.Repositories
         }
 
 
-        public async Task<User> Delete(Guid id)
+        public async Task<User> Delete(int id)
         {
             var user = _context.Users.SingleOrDefault(p => p.Id == id);
             if (user == null)
