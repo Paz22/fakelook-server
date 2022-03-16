@@ -14,8 +14,9 @@
         {
             private readonly ITokenService _tokenService;
             private readonly IRepository<User> _userRepository;
+            //TODO: move string to const
 
-            public GetUserActionFilter(ITokenService tokenService, IRepository<User> userRepository)
+            public GetUserActionFilter(ITokenService tokenService, IUserRepository userRepository)
             {
                 _tokenService = tokenService;
                 _userRepository = userRepository;

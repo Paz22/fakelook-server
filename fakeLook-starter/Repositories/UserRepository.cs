@@ -88,6 +88,8 @@ namespace fakeLook_starter.Repositories
 
         }
 
+
+
         public ICollection<User> GetByPredicate(Func<User, bool> predicate)
         {
             return _context.Users.Where(predicate).ToList();
