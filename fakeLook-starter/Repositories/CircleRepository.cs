@@ -104,7 +104,6 @@ namespace fakeLook_starter.Repositories
             return true;
         }
 
-
         public ICollection<Circle> GetByPredicate(Func<Circle, bool> predicate)
         {
             throw new NotImplementedException();

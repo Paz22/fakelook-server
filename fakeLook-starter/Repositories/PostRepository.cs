@@ -30,6 +30,9 @@ namespace fakeLook_starter.Repositories
             {
                 return null;
             }
+            post.Comments?.Clear();
+            post.Tags?.Clear();
+            post.Likes?.Clear();
             _context.Posts.Remove(post);
             await _context.SaveChangesAsync();
             return post;
@@ -38,12 +41,12 @@ namespace fakeLook_starter.Repositories
         public async Task<Post> Edit(Post item)
         {
             item.IsEdited = true;
-            var temp = _context.Users.FirstOrDefault(u => u.Id == item.Id);
+            var temp = _context.Posts.FirstOrDefault(u => u.Id == item.Id);
             if (temp == null)
             {
                 return null;//TODO
             }
-            _context.Entry<User>(temp).CurrentValues.SetValues(item);
+            _context.Entry<Post>(temp).CurrentValues.SetValues(item);
             await _context.SaveChangesAsync();
             return item;
         }
