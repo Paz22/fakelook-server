@@ -29,10 +29,13 @@ namespace fakeLook_starter.Controllers
         [HttpGet]
         [Route("GetAll")]
         [TypeFilter(typeof(GetUserActionFilter))]
+
         public IEnumerable<Post> GetAll()
         {
             return _repo.GetAll();
         }
+
+
 
         // GET api/<PostsController>/5
         [HttpGet()]
@@ -52,11 +55,11 @@ namespace fakeLook_starter.Controllers
         }
 
         // PUT api/<PostsController>/5
-        [HttpPut("Post")]
-        [TypeFilter(typeof(GetUserActionFilter))]
+        [HttpPut]
         public void Put( Post post)
         {
             _repo.Edit(post);
+
         }
 
         // DELETE api/<PostsController>/5

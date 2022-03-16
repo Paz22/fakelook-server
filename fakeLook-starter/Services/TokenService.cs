@@ -38,6 +38,7 @@ namespace fakeLook_starter.Services
 
         public string GetPayload(string token)
         {
+
             var tokenHandler = new JwtSecurityTokenHandler();
             return tokenHandler.ReadJwtToken(token).Claims.Where(claim => claim.Type == ClaimTypes.Name).Single().Value;
         }

@@ -29,34 +29,19 @@ namespace fakeLook_dal.Data
         {
             #region Model Mapping
             //users
-            modelBuilder.Entity<User>().HasMany(u => u.Comments).WithOne(c => c.User).OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<User>().HasMany(u => u.Posts).WithOne(p => p.User).OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<User>().HasMany(u => u.Likes).WithOne(l => l.User).OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<User>().HasMany(u => u.UserTaggedComment).WithOne(utc => utc.User).OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<User>().HasMany(u => u.UserTaggedPost).WithOne(utp => utp.User).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<User>().HasMany(u => u.Comments).WithOne(c => c.User).OnDelete(DeleteBehavior.ClientCascade);
+            modelBuilder.Entity<User>().HasMany(u => u.Posts).WithOne(p => p.User).OnDelete(DeleteBehavior.ClientCascade);
+            modelBuilder.Entity<User>().HasMany(u => u.Likes).WithOne(l => l.User).OnDelete(DeleteBehavior.ClientCascade);
+            modelBuilder.Entity<User>().HasMany(u => u.UserTaggedComment).WithOne(utc => utc.User).OnDelete(DeleteBehavior.ClientCascade);
+            modelBuilder.Entity<User>().HasMany(u => u.UserTaggedPost).WithOne(utp => utp.User).OnDelete(DeleteBehavior.ClientCascade);
             ;
             //posts
             modelBuilder.Entity<Post>().HasMany(p => p.Likes).WithOne(l => l.Post).OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Post>()
-                .HasMany(p => p.Comments)
-                //.WithMany()
-                //.WillCascadeOnDelete(true);
-            .WithOne(l => l.Post)
-            .OnDelete(DeleteBehavior.Cascade);
-
+            modelBuilder.Entity<Post>().HasMany(p => p.Comments).WithOne(c => c.Post).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Post>().HasMany(p => p.UserTaggedPost).WithOne(utp => utp.Post).OnDelete(DeleteBehavior.Cascade);
             ;
             //comment
-            modelBuilder.Entity<Comment>()
-                .HasMany(c => c.UserTaggedComment)
-                .WithOne(utc => utc.Comment)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<Comment>()
-               .HasOne(c => c.Post)
-               .WithMany(p => p.Comments)
-               .OnDelete(DeleteBehavior.Cascade);
-
+            modelBuilder.Entity<Comment>().HasMany(c => c.UserTaggedComment).WithOne(utc => utc.Comment).OnDelete(DeleteBehavior.Cascade);
             #endregion
             //simple seed
             SeedDb(modelBuilder);
@@ -64,13 +49,15 @@ namespace fakeLook_dal.Data
         private void SeedDb(ModelBuilder modelBuilder)
         {
             const int amount = 5;
-            AddUsers();
-            AddPosts();
-            AddComment();
-            AddLike();
-            AddTags();
-            AddUserTaggedPosts();
             AddUserTaggedComments();
+            AddUserTaggedPosts();
+            AddTags();
+            AddLike();
+            AddComment();
+            AddPosts();
+            AddUsers();
+
+
 
 
             void AddUsers()

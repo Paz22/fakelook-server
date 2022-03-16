@@ -2,11 +2,13 @@
 {
     using fakeLook_models.Models;
     using fakeLook_starter.Interfaces;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc.Filters;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
+    using System.Net.Http;
     using System.Threading.Tasks;
 
     namespace auth_example.Filters
@@ -14,8 +16,7 @@
         public class GetUserActionFilter : ActionFilterAttribute
         {
             private readonly ITokenService _tokenService;
-            private readonly IRepository<User> _userRepository;
-            //TODO: move string to const
+            private readonly IUserRepository _userRepository;
 
             public GetUserActionFilter(ITokenService tokenService, IUserRepository userRepository)
             {
