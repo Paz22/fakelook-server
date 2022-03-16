@@ -77,9 +77,9 @@ namespace fakeLook_starter.Repositories
         }
 
 
-        public bool DeleteMember(int id,User user)
+        public bool DeleteMember(int id, User user)
         {
-            var circle= _context.Circles.SingleOrDefault(p => p.Id == id);
+            var circle = _context.Circles.SingleOrDefault(p => p.Id == id);
             if (circle == null)
             {
                 return false;

@@ -32,7 +32,7 @@ namespace fakeLook_starter.Repositories
 
         public User GetById(int id)
         {
-             return (_context.Users.SingleOrDefault(u => u.Id == id));
+            return (_context.Users.SingleOrDefault(u => u.Id == id));
         }
 
         public async Task<User> Add(User item)
@@ -43,16 +43,16 @@ namespace fakeLook_starter.Repositories
             }
             else
             {
-            item.Password = item.Password.GetHashCode().ToString();
-            var res = _context.Users.Add(item);
-            await _context.SaveChangesAsync();
-            return res.Entity;
-           }           
+                item.Password = item.Password.GetHashCode().ToString();
+                var res = _context.Users.Add(item);
+                await _context.SaveChangesAsync();
+                return res.Entity;
+            }
         }
 
         private bool UserExists(User user)
         {
-            var res=_context.Users.Where(item => item.UserName == user.UserName).SingleOrDefault();
+            var res = _context.Users.Where(item => item.UserName == user.UserName).SingleOrDefault();
             return res != null;
         }
 
@@ -67,12 +67,11 @@ namespace fakeLook_starter.Repositories
             await _context.SaveChangesAsync();
             if (!UserExists(item))
             {
-                    //TODO
+                //TODO
             }
             return item;
-
-
         }
+
 
 
         public async Task<User> Delete(int id)
@@ -110,6 +109,6 @@ namespace fakeLook_starter.Repositories
                 return algorithm.ComputeHash(Encoding.UTF8.GetBytes(inputString));
         }
 
-       
+
     }
 }
