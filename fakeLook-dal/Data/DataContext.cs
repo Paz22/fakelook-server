@@ -14,7 +14,7 @@ namespace fakeLook_dal.Data
 
         public DbSet<Circle> Circles { get; set; }
 
-        public DbSet<CircleUser> CircleUsers { get; set; }
+        //public DbSet<CircleUser> CircleUsers { get; set; }
 
         public DbSet<Like> Likes { get; set; }
         public DbSet<UserTaggedComment> UserTaggedComments { get; set; }

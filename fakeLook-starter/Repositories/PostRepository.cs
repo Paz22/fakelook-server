@@ -31,6 +31,9 @@ namespace fakeLook_starter.Repositories
             {
                 return null;
             }
+            post.Comments?.Clear();
+            post.Tags?.Clear();
+            post.Likes?.Clear();
             _context.Posts.Remove(post);
             await _context.SaveChangesAsync();
             return post;
