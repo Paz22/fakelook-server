@@ -1,6 +1,7 @@
 ﻿using fakeLook_dal.Data;
 using fakeLook_models.Models;
 using fakeLook_starter.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,19 +39,19 @@ namespace fakeLook_starter.Repositories
         public async Task<Post> Edit(Post item)
         {
             item.IsEdited = true;
-            var temp = _context.Users.FirstOrDefault(u => u.Id == item.Id);
+            var temp = _context.Posts.FirstOrDefault(u => u.Id == item.Id);
             if (temp == null)
             {
                 return null;//TODO
             }
-            _context.Entry<User>(temp).CurrentValues.SetValues(item);
+            _context.Entry<Post>(temp).CurrentValues.SetValues(item);
             await _context.SaveChangesAsync();
             return item;
         }
 
         public ICollection<Post> GetAll()
         {
-            return _context.Posts.ToList();
+            return _context.Posts.Include(p => p.User).Include(p => p.Comments).ThenInclude(c => c.User).ToList();
         }
 
         public Post GetById(int id)

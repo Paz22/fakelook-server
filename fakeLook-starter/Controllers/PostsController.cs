@@ -1,5 +1,6 @@
 ﻿using fakeLook_dal.Data;
 using fakeLook_models.Models;
+using fakeLook_starter.auth_example.Filters;
 using fakeLook_starter.Interfaces;
 using fakeLook_starter.Repositories;
 using Microsoft.AspNetCore.Authorization;
@@ -13,7 +14,6 @@ namespace fakeLook_starter.Controllers
 {
     [Route("api/PostsAPI")]
     [ApiController]
-    [Authorize]
     public class PostsController : ControllerBase
     {
         private IPostRepository _repo;
@@ -27,10 +27,14 @@ namespace fakeLook_starter.Controllers
         //GET: api/<PostsController>
         [HttpGet]
         [Route("GetAll")]
+        [TypeFilter(typeof(GetUserActionFilter))]
+
         public IEnumerable<Post> GetAll()
         {
             return _repo.GetAll();
         }
+
+
 
         // GET api/<PostsController>/5
         [HttpGet()]
@@ -48,10 +52,11 @@ namespace fakeLook_starter.Controllers
         }
 
         // PUT api/<PostsController>/5
-        [HttpPut("Post")]
+        [HttpPut]
         public void Put( Post post)
         {
             _repo.Edit(post);
+
         }
 
         // DELETE api/<PostsController>/5
