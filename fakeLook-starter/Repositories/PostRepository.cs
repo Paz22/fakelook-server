@@ -62,9 +62,8 @@ namespace fakeLook_starter.Repositories
                 .Include(p=>p.Likes).ThenInclude(p=>p.User)
                 .Include(p => p.User)
                 .Include(p => p.Comments).ThenInclude(c => c.User)
-                .Include(p=>p.Tags)
                 .Include(p=>p.UserTaggedPost).ThenInclude(t=>t.User)
-               .ToList();
+                .Select( dtoLogic).ToList();
         }
 
         private Post dtoLogic(Post p)
