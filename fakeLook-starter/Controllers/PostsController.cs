@@ -27,7 +27,7 @@ namespace fakeLook_starter.Controllers
 
         //GET: api/<PostsController>
         [HttpGet]
-        [Route("GetAll")]
+        [Route("/GetAllPosts")]
         //[TypeFilter(typeof(GetUserActionFilter))]
         public IEnumerable<Post> GetAll()
         {
@@ -35,8 +35,8 @@ namespace fakeLook_starter.Controllers
         }
 
         // GET api/<PostsController>/5
-        [HttpGet()]
-        [Route("GetById")]
+        [HttpGet]
+        [Route("/GetPostById")]
         [TypeFilter(typeof(GetUserActionFilter))]
         public Post GetById(int id)
         {
@@ -45,6 +45,7 @@ namespace fakeLook_starter.Controllers
 
         // POST api/<PostsController>
         [HttpPost]
+        [Route("/AddPost")]
         [TypeFilter(typeof(GetUserActionFilter))]
         public void Post(Post post)
         {
@@ -52,7 +53,8 @@ namespace fakeLook_starter.Controllers
         }
 
         // PUT api/<PostsController>/5
-        [HttpPut("Post")]
+        [HttpPut]
+        [Route("/EditPost")]
         [TypeFilter(typeof(GetUserActionFilter))]
         public void Put(Post post)
         {
@@ -60,7 +62,8 @@ namespace fakeLook_starter.Controllers
         }
 
         // DELETE api/<PostsController>/5
-        [HttpDelete("{id}")]
+        [HttpDelete]
+        [Route("/DeletePost")]
         [TypeFilter(typeof(GetUserActionFilter))]
         public Task<Post> Delete(int id)
         {

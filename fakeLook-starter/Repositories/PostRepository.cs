@@ -38,7 +38,7 @@ namespace fakeLook_starter.Repositories
             return _converter.DtoPost(post);
         }
 
-        public string getUsernameById(int id) //for internal use only
+        public string getUsernameById(int id) //for internal use only,hence not writing dto
         {
             return _context.Users.SingleOrDefault(u => u.Id == id).UserName;
         }
@@ -46,6 +46,7 @@ namespace fakeLook_starter.Repositories
         public async Task<Post> Edit(Post item)
         {
             item.IsEdited = true;
+            
             var temp = _context.Posts.FirstOrDefault(u => u.Id == item.Id);
             if (temp == null)
             {
