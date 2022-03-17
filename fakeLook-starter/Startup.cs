@@ -30,6 +30,9 @@ namespace fakeLook_starter
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers().AddJsonOptions(options => {
+                options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+            });
   
             #region Configure jwt Auth
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -47,12 +50,12 @@ namespace fakeLook_starter
                   };
               });
             #endregion
-            services.AddControllers().AddJsonOptions(options => {
-                options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
-            });
+         
             services.AddTransient<ITokenService, TokenService>();
             services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IPostRepository, PostRepository>();
+            services.AddTransient<IPostRepository, PostRepository>();
+            services.AddTransient<IDtoConverter, DtoConverter>();
+
 
             #region Setting DB configuration
             string connectionString = Configuration.GetConnectionString("DefaultConnection");

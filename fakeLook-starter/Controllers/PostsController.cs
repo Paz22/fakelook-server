@@ -28,7 +28,7 @@ namespace fakeLook_starter.Controllers
         //GET: api/<PostsController>
         [HttpGet]
         [Route("GetAll")]
-        [TypeFilter(typeof(GetUserActionFilter))]
+        //[TypeFilter(typeof(GetUserActionFilter))]
         public IEnumerable<Post> GetAll()
         {
             return _repo.GetAll();
@@ -61,14 +61,28 @@ namespace fakeLook_starter.Controllers
 
         // DELETE api/<PostsController>/5
         [HttpDelete("{id}")]
-        //[TypeFilter(typeof(GetUserActionFilter))]
-
+        [TypeFilter(typeof(GetUserActionFilter))]
         public Task<Post> Delete(int id)
         {
             return _repo.Delete(id);
         }
 
-        public bool checkDate(DateTime postDate, DateTime startingDate, DateTime endingDate)
+        [HttpPost]
+        [Route("/Filter")]
+        public async Task<Post> Filter(Filter filter)
+        {
+            var res = _repo.GetByPredicate(post =>
+            {
+
+                bool date = checkDate(post.Date, filter.startingDate, filter.endingDate);
+                bool publishers = checkPublishers(post.UserId, filter.Publishers);
+                bool taggs = checkTaggs(post.Tags, filter.tags);
+                bool taggedUsers = checkTagged(post.UserTaggedPost, filter.taggedUsers);
+                return date && publishers && taggedUsers && taggedUsers;
+            });
+            return null;
+        }
+        private bool checkDate(DateTime postDate, DateTime startingDate, DateTime endingDate)
         {
             bool date;
             if (startingDate == null && endingDate == null)
@@ -90,7 +104,7 @@ namespace fakeLook_starter.Controllers
             return date;
         }
 
-        public bool checkPublishers(int userId, ICollection<string> publishers)
+        private bool checkPublishers(int userId, ICollection<string> publishers)
         {
             if (publishers.Count == 0)
             {
@@ -99,7 +113,7 @@ namespace fakeLook_starter.Controllers
             var userName = _repo.getUsernameById(userId);
             return publishers.Contains(userName);
         }
-        public bool checkTaggs(ICollection<Tag> postTags, ICollection<string> taggs)
+        private bool checkTaggs(ICollection<Tag> postTags, ICollection<string> taggs)
         {
             if (taggs.Count == 0)
             {
@@ -118,7 +132,7 @@ namespace fakeLook_starter.Controllers
             return false;
         }
 
-        public bool checkTagged(ICollection<UserTaggedPost> taggedPost, ICollection<string> taggedFilter)
+        private bool checkTagged(ICollection<UserTaggedPost> taggedPost, ICollection<string> taggedFilter)
         {
             if (taggedFilter.Count == 0)
             {
@@ -134,24 +148,7 @@ namespace fakeLook_starter.Controllers
             return false;
         }
 
-        public Task<Post> Filter(Filter filter)
-        {
-            var res = _repo.GetByPredicate(post =>
-            {
 
-                bool date = checkDate(post.Date, filter.startingDate, filter.EndingDate);
-                bool publishers = checkPublishers(post.UserId, filter.Publishers);
-                //bool radius = checkRadius(post, filter.radiusFromCurrentLocation);
-                bool taggs = checkTaggs(post.Tags, filter.tags);
-                bool taggedUsers = checkTagged(post.UserTaggedPost, filter.taggedUsers);
-
-            }
-
-
-
-            );
-            //TODO return value
-        }
 
 
     }
