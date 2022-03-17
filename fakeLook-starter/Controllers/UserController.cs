@@ -28,7 +28,7 @@ namespace fakeLook_starter.Controllers
 
         //GET: api/<User>
         [HttpGet()]
-        [Route("GetAllUsers")]
+        [Route("/GetAllUsers")]
         public IEnumerable<User> GetAllUsers()
         {
             return _repo.GetAll();
@@ -36,7 +36,7 @@ namespace fakeLook_starter.Controllers
 
         // GET api/<User>/5
         [HttpGet]
-        [Route("GetById")]
+        [Route("/GetById")]
         public User GetById(int id)
         {
             return _repo.GetById(id);
@@ -67,7 +67,7 @@ namespace fakeLook_starter.Controllers
 
         // PUT api/<User>/5
         [HttpPut]
-        [Route("Put")]
+        [Route("/Put")]
         public void Put(User user)
         {
             _repo.Edit(user);
@@ -98,7 +98,7 @@ namespace fakeLook_starter.Controllers
         }
 
         [HttpGet]
-        [Route("getUserByToken")]
+        [Route("/GetUserByToken")]
         [TypeFilter(typeof(GetUserActionFilter))]
         public User getUserByToken(string token)
         {

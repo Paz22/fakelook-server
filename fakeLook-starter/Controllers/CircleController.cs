@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace fakeLook_starter.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Circle")]
     [ApiController]
     public class CircleController : ControllerBase
     {
