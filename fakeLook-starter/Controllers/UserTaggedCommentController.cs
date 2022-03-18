@@ -2,7 +2,6 @@
 using fakeLook_starter.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -11,38 +10,38 @@ namespace fakeLook_starter.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LikesController : ControllerBase
+    public class UserTaggedCommentController : ControllerBase
     {
 
-        private IUneditableRepository<Like> _repo;
+        private IUneditableRepository<UserTaggedComment> _repo;
 
-        public LikesController(IUneditableRepository<Like> likeRepository)
+        public UserTaggedCommentController(IUneditableRepository<UserTaggedComment> userTaggedCommentRepository)
         {
-            _repo = likeRepository;
+            _repo = userTaggedCommentRepository;
         }
-
-        // GET: api/<LikesController>
+        // GET: api/<UserTaggedCommentController>
         [HttpGet]
-        public IEnumerable<Like> GetAll()
+        public ICollection<UserTaggedComment> GetAll()
         {
             return _repo.GetAll();
         }
 
-        // GET api/<LikesController>/5
+        // GET api/<UserTaggedCommentController>/5
         [HttpGet("{id}")]
-        public Like GetById(int id)
+        public UserTaggedComment GetById(int id)
         {
             return _repo.GetById(id);
         }
 
-        // POST api/<LikesController>
+        // POST api/<UserTaggedCommentController>
         [HttpPost]
-        public void Post(Like like)
+        public Task<UserTaggedComment> Post(UserTaggedComment tag)
         {
-            _repo.Add(like);
+            return _repo.Add(tag);
         }
 
-        // DELETE api/<LikesController>/5
+       
+        // DELETE api/<UserTaggedCommentController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

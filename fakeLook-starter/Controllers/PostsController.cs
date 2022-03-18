@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -70,6 +71,21 @@ namespace fakeLook_starter.Controllers
             return _repo.Delete(id);
         }
 
+        [HttpGet]
+        [Route("/getPostsByFilteredBlocked")]
+        [TypeFilter(typeof(GetUserActionFilter))]
+        public IEnumerable<Post> GetFriendsPosts(int userId)
+        {
+            ICollection<Post> allPosts=_repo.GetAll();
+            ICollection<Block> blocked = _repo.getAllBlockedByUser(userId);
+            IEnumerable<int> blockedId = blocked.Select(x => x.BlockedUserId);
+            return allPosts.Where(p => !blockedId.Contains(p.UserId));
+        }
+
+       
+
+
+
         [HttpPost]
         [Route("/Filter")]
         public async Task<Post> Filter(Filter filter)
@@ -85,18 +101,18 @@ namespace fakeLook_starter.Controllers
             });
             return null;
         }
-        private bool checkDate(DateTime postDate, DateTime startingDate, DateTime endingDate)
+        private bool checkDate(DateTime postDate, Nullable<DateTime> startingDate, Nullable<DateTime> endingDate)
         {
             bool date;
-            if (startingDate == null && endingDate == null)
+            if (!startingDate.HasValue && !endingDate.HasValue)
             {
                 date = true;
             }
-            else if (startingDate == null && endingDate != null)
+            else if (!startingDate.HasValue && endingDate.HasValue)
             {
                 date = (postDate < endingDate);
             }
-            else if (startingDate != null && endingDate == null)
+            else if (startingDate.HasValue && !endingDate.HasValue)
             {
                 date = (postDate < startingDate);
             }

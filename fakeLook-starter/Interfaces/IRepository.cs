@@ -24,5 +24,6 @@ namespace fakeLook_starter.Interfaces
     public interface IPostRepository : IRepository<Post>
     {
         public string getUsernameById(int id);
+        ICollection<Block> getAllBlockedByUser(int userId);
     }
 }

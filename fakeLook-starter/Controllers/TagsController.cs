@@ -1,44 +1,52 @@
-﻿//using fakeLook_models.Models;
-//using Microsoft.AspNetCore.Mvc;
-//using System.Threading.Tasks;
+﻿using fakeLook_models.Models;
+using fakeLook_starter.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-//// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-//namespace fakeLook_starter.Controllers
-//{
-//    [Route("api/[controller]")]
-//    [ApiController]
-//    public class TagsController : ControllerBase
-//    {
-//        // GET: api/<TagsController>
-//        [HttpGet]
-//        public Task<Like> Get()
-//        {
-//        }
+namespace fakeLook_starter.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class TagsController : ControllerBase
+    {
 
-//        // GET api/<TagsController>/5
-//        [HttpGet("{id}")]
-//        public string Get(int id)
-//        {
-//            return "value";
-//        }
+        private IUneditableRepository<Tag> _repo;
 
-//        // POST api/<TagsController>
-//        [HttpPost]
-//        public void Post([FromBody] string value)
-//        {
-//        }
+        public TagsController(IUneditableRepository<Tag> tagsRepository)
+        {
+            _repo = tagsRepository;
+        }
+        // GET: api/<TagsController>
+        [HttpGet]
+        public ICollection<Tag> GetAll()
+        {
+            return _repo.GetAll();
+        }
 
-//        // PUT api/<TagsController>/5
-//        [HttpPut("{id}")]
-//        public void Put(int id, [FromBody] string value)
-//        {
-//        }
+        // GET api/<TagsController>/5
+        [HttpGet("{id}")]
+        public Tag GetById(int id)
+        {
+            return _repo.GetById(id);
+        }
 
-//        // DELETE api/<TagsController>/5
-//        [HttpDelete("{id}")]
-//        public void Delete(int id)
-//        {
-//        }
-//    }
-//}
+        // POST api/<TagsController>
+        [HttpPost]
+        public Task<Tag> Add(Tag tag)
+        {
+            return _repo.Add(tag);
+        }
+
+       
+
+        // DELETE api/<TagsController>/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+            _repo.Delete(id);
+        }
+    }
+}
