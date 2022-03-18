@@ -45,9 +45,11 @@ namespace fakeLook_starter.Controllers
 
         // POST api/<PostsController>
         [HttpPost]
+        [Authorize]
         [TypeFilter(typeof(GetUserActionFilter))]
         public void Post(Post post)
         {
+        
             _repo.Add(post);
         }
 

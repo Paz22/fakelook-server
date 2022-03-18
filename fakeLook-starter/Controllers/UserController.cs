@@ -44,7 +44,7 @@ namespace fakeLook_starter.Controllers
 
         // POST api/<User>
         [HttpPost]
-        [Route("/Post")]
+        [Route("Post")]
 
         public void Post(User user)
         {
@@ -53,7 +53,7 @@ namespace fakeLook_starter.Controllers
 
         // POST api/<User>
         [HttpPost]
-        [Route("/Register")]
+        [Route("Register")]
         public async Task<IActionResult> Register(User user)
         {
             var dbUser = await _repo.Add(user);
@@ -74,7 +74,7 @@ namespace fakeLook_starter.Controllers
         }
 
         [HttpPost]
-        [Route("/Login")]
+        [Route("Login")]
         public IActionResult Login(User user)
         {
             var dbUser = _repo.getByUser(user);
@@ -90,7 +90,7 @@ namespace fakeLook_starter.Controllers
 
         // DELETE api/<User>/5
         [HttpDelete]
-        [Route("/Delete")]
+        [Route("Delete")]
 
         public void DeleteUser(int id)
         {
@@ -98,7 +98,7 @@ namespace fakeLook_starter.Controllers
         }
 
         [HttpGet]
-        [Route("getUserByToken")]
+        [Route("GetUserByToken")]
         [TypeFilter(typeof(GetUserActionFilter))]
         public User getUserByToken(string token)
         {

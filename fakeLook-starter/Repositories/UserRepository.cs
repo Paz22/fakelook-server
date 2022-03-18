@@ -26,7 +26,6 @@ namespace fakeLook_starter.Repositories
 
         public User getByUser(User user)
         {
-            user.Password = user.Password.GetHashCode().ToString();
             return _context.Users.Where(item => item.Password == user.Password && item.UserName == user.UserName).SingleOrDefault();
         }
 
@@ -43,7 +42,6 @@ namespace fakeLook_starter.Repositories
             }
             else
             {
-                item.Password = item.Password.GetHashCode().ToString();
                 var res = _context.Users.Add(item);
                 await _context.SaveChangesAsync();
                 return res.Entity;

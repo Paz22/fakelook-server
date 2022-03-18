@@ -29,6 +29,9 @@ namespace fakeLook_dal.Data
         {
             #region Model Mapping
             //users
+            modelBuilder.Entity<User>().HasKey(u => u.Id);
+            modelBuilder.Entity<User>().HasIndex(u => u.UserName).IsUnique();
+
             modelBuilder.Entity<User>().HasMany(u => u.Comments).WithOne(c => c.User).OnDelete(DeleteBehavior.ClientCascade);
             modelBuilder.Entity<User>().HasMany(u => u.Posts).WithOne(p => p.User).OnDelete(DeleteBehavior.ClientCascade);
             modelBuilder.Entity<User>().HasMany(u => u.Likes).WithOne(l => l.User).OnDelete(DeleteBehavior.ClientCascade);
@@ -49,13 +52,13 @@ namespace fakeLook_dal.Data
         private void SeedDb(ModelBuilder modelBuilder)
         {
             const int amount = 5;
-            AddUserTaggedComments();
-            AddUserTaggedPosts();
-            AddTags();
-            AddLike();
-            AddComment();
-            AddPosts();
             AddUsers();
+            AddPosts();
+            //AddComment();
+            AddLike();
+            AddTags();
+            AddUserTaggedPosts();
+            //AddUserTaggedComments();
 
 
 
