@@ -50,11 +50,35 @@ namespace fakeLook_starter
                   };
               });
             #endregion
-         
+
             services.AddTransient<ITokenService, TokenService>();
             services.AddScoped<IUserRepository, UserRepository>();
-            services.AddTransient<IPostRepository, PostRepository>();
+
             services.AddTransient<IDtoConverter, DtoConverter>();
+
+            //services.AddScoped<ITokenService, TokenService>();
+            //services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IPostRepository, PostRepository>();
+            //services.AddScoped<IPostRepository, PostRepository>();
+
+            services.AddScoped<IDtoConverter, DtoConverter>();
+            services.AddScoped<ILikeRepository, LikesRepository>();
+            services.AddScoped<ICommentRepository, CommentsRepository>();
+            services.AddScoped<IUserTaggedCommentRepository, UserTaggedCommentRepository>();
+            services.AddScoped<IUserTaggedPostRepository, UserTaggedPostRepository>();
+            services.AddScoped<ITagsRepository, TagsRepository>();
+
+            //services.AddTransient<ITokenService, TokenService>();
+            //services.AddTransient<IUserRepository, UserRepository>();
+            //services.AddTransient<IPostRepository, PostRepository>();
+            //services.AddTransient<IPostRepository, PostRepository>();
+
+            //services.AddTransient<ILikeRepository, LikesRepository>();
+            //services.AddTransient<ICommentRepository, CommentsRepository>();
+            //services.AddTransient<IUserTaggedCommentRepository, UserTaggedCommentRepository>();
+            //services.AddTransient<IUserTaggedPostRepository, UserTaggedPostRepository>();
+            //services.AddTransient<ITagsRepository, TagsRepository>();
+
 
 
             #region Setting DB configuration

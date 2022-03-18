@@ -2,7 +2,6 @@
 using fakeLook_starter.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -10,39 +9,37 @@ namespace fakeLook_starter.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TagsController : ControllerBase
+    public class CommentsController : ControllerBase
     {
 
-        private ITagsRepository _repo;
+        private ICommentRepository _repo;
 
-        public TagsController(ITagsRepository tagsRepository)
+        public CommentsController(ICommentRepository commentRepository)
         {
-            _repo = tagsRepository;
+            _repo = commentRepository;
         }
-        // GET: api/<TagsController>
+        // GET: api/<CommentsController>
         [HttpGet]
-        public ICollection<Tag> GetAll()
+        public ICollection<Comment> GetAll()
         {
             return _repo.GetAll();
         }
 
-        // GET api/<TagsController>/5
+        // GET api/<CommentsController>/5
         [HttpGet("{id}")]
-        public Tag GetById(int id)
+        public Comment GetById(int id)
         {
             return _repo.GetById(id);
         }
 
-        // POST api/<TagsController>
+        // POST api/<CommentsController>
         [HttpPost]
-        public Task<Tag> Add(Tag tag)
+        public void Post(Comment comment)
         {
-            return _repo.Add(tag);
+            _repo.Add(comment);
         }
 
-       
-
-        // DELETE api/<TagsController>/5
+        // DELETE api/<CommentsController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

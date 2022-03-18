@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using fakeLook_models.Models;
+using fakeLook_starter.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -8,36 +13,40 @@ namespace fakeLook_starter.Controllers
     [ApiController]
     public class LikesController : ControllerBase
     {
+
+        private ILikeRepository _repo;
+
+        public LikesController(ILikeRepository likeRepository)
+        {
+            _repo = likeRepository;
+        }
+
         // GET: api/<LikesController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<Like> GetAll()
         {
-            return new string[] { "value1", "value2" };
+            return _repo.GetAll();
         }
 
         // GET api/<LikesController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public Like GetById(int id)
         {
-            return "value";
+            return _repo.GetById(id);
         }
 
         // POST api/<LikesController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post(Like like)
         {
-        }
-
-        // PUT api/<LikesController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
+            _repo.Add(like);
         }
 
         // DELETE api/<LikesController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            _repo.Delete(id);
         }
     }
 }

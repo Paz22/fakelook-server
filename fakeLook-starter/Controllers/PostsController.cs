@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -27,7 +28,7 @@ namespace fakeLook_starter.Controllers
 
         //GET: api/<PostsController>
         [HttpGet]
-        [Route("/GetAllPosts")]
+        [Route("GetAllPosts")]
         //[TypeFilter(typeof(GetUserActionFilter))]
         public IEnumerable<Post> GetAll()
         {
@@ -36,7 +37,7 @@ namespace fakeLook_starter.Controllers
 
         // GET api/<PostsController>/5
         [HttpGet]
-        [Route("/GetPostById")]
+        [Route("GetPostById")]
         [TypeFilter(typeof(GetUserActionFilter))]
         public Post GetById(int id)
         {
@@ -45,8 +46,8 @@ namespace fakeLook_starter.Controllers
 
         // POST api/<PostsController>
         [HttpPost]
-        [Route("/AddPost")]
-        [TypeFilter(typeof(GetUserActionFilter))]
+        [Route("AddPost")]
+        //[TypeFilter(typeof(GetUserActionFilter))]
         public void Post(Post post)
         {
             _repo.Add(post);
@@ -54,7 +55,7 @@ namespace fakeLook_starter.Controllers
 
         // PUT api/<PostsController>/5
         [HttpPut]
-        [Route("/EditPost")]
+        [Route("EditPost")]
         [TypeFilter(typeof(GetUserActionFilter))]
         public void Put(Post post)
         {
@@ -63,15 +64,30 @@ namespace fakeLook_starter.Controllers
 
         // DELETE api/<PostsController>/5
         [HttpDelete]
-        [Route("/DeletePost")]
+        [Route("DeletePost")]
         [TypeFilter(typeof(GetUserActionFilter))]
         public Task<Post> Delete(int id)
         {
             return _repo.Delete(id);
         }
 
+        [HttpGet]
+        [Route("GetPostsByFilteredBlocked")]
+        [TypeFilter(typeof(GetUserActionFilter))]
+        public IEnumerable<Post> GetFriendsPosts(int userId)
+        {
+            ICollection<Post> allPosts=_repo.GetAll();
+            ICollection<Block> blocked = _repo.getAllBlockedByUser(userId);
+            IEnumerable<int> blockedId = blocked.Select(x => x.BlockedUserId);
+            return allPosts.Where(p => !blockedId.Contains(p.UserId));
+        }
+
+       
+
+
+
         [HttpPost]
-        [Route("/Filter")]
+        [Route("Filter")]
         public async Task<Post> Filter(Filter filter)
         {
             var res = _repo.GetByPredicate(post =>
@@ -85,18 +101,18 @@ namespace fakeLook_starter.Controllers
             });
             return null;
         }
-        private bool checkDate(DateTime postDate, DateTime startingDate, DateTime endingDate)
+        private bool checkDate(DateTime postDate, Nullable<DateTime> startingDate, Nullable<DateTime> endingDate)
         {
             bool date;
-            if (startingDate == null && endingDate == null)
+            if (!startingDate.HasValue && !endingDate.HasValue)
             {
                 date = true;
             }
-            else if (startingDate == null && endingDate != null)
+            else if (!startingDate.HasValue && endingDate.HasValue)
             {
                 date = (postDate < endingDate);
             }
-            else if (startingDate != null && endingDate == null)
+            else if (startingDate.HasValue && !endingDate.HasValue)
             {
                 date = (postDate < startingDate);
             }

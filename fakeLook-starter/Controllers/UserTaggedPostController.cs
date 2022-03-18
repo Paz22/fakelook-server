@@ -10,43 +10,41 @@ namespace fakeLook_starter.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TagsController : ControllerBase
+    public class UserTaggedPostController : ControllerBase
     {
 
-        private ITagsRepository _repo;
+        private IUserTaggedPostRepository _repo;
 
-        public TagsController(ITagsRepository tagsRepository)
+        public UserTaggedPostController(IUserTaggedPostRepository userTaggedPostRepository)
         {
-            _repo = tagsRepository;
+            _repo = userTaggedPostRepository;
         }
-        // GET: api/<TagsController>
+        // GET: api/<UserTaggedPostController>
         [HttpGet]
-        public ICollection<Tag> GetAll()
+        public ICollection<UserTaggedPost> GetAll()
         {
             return _repo.GetAll();
         }
 
-        // GET api/<TagsController>/5
+        // GET api/<UserTaggedPostController>/5
         [HttpGet("{id}")]
-        public Tag GetById(int id)
+        public UserTaggedPost GetById(int id)
         {
             return _repo.GetById(id);
         }
 
-        // POST api/<TagsController>
         [HttpPost]
-        public Task<Tag> Add(Tag tag)
+        public Task<UserTaggedPost> Post(UserTaggedPost tag)
         {
             return _repo.Add(tag);
         }
 
-       
 
-        // DELETE api/<TagsController>/5
+               // DELETE api/<UserTaggedPostController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            _repo.Delete(id);
+           _repo.Delete(id);
         }
     }
 }
