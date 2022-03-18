@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace fakeLook_starter.Repositories
 {
-    public class UserTaggedCommentRepository : IUneditableRepository<UserTaggedComment>
+    public class UserTaggedCommentRepository : IUserTaggedCommentRepository
     {
 
         readonly private DataContext _context;

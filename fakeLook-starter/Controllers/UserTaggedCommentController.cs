@@ -13,9 +13,9 @@ namespace fakeLook_starter.Controllers
     public class UserTaggedCommentController : ControllerBase
     {
 
-        private IUneditableRepository<UserTaggedComment> _repo;
+        private IUserTaggedCommentRepository _repo;
 
-        public UserTaggedCommentController(IUneditableRepository<UserTaggedComment> userTaggedCommentRepository)
+        public UserTaggedCommentController(IUserTaggedCommentRepository userTaggedCommentRepository)
         {
             _repo = userTaggedCommentRepository;
         }

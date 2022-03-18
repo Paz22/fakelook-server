@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace fakeLook_starter.Repositories
 {
-    public class LikesRepository : IUneditableRepository<Like>
+    public class LikesRepository : ILikeRepository
     {
 
         readonly private DataContext _context;

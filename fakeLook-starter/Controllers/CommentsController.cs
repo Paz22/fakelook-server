@@ -2,7 +2,6 @@
 using fakeLook_starter.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -10,41 +9,41 @@ namespace fakeLook_starter.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserTaggedPostController : ControllerBase
+    public class CommentsController : ControllerBase
     {
 
-        private IUserTaggedPostRepository _repo;
+        private ICommentRepository _repo;
 
-        public UserTaggedPostController(IUserTaggedPostRepository userTaggedPostRepository)
+        public CommentsController(ICommentRepository commentRepository)
         {
-            _repo = userTaggedPostRepository;
+            _repo = commentRepository;
         }
-        // GET: api/<UserTaggedPostController>
+        // GET: api/<CommentsController>
         [HttpGet]
-        public ICollection<UserTaggedPost> GetAll()
+        public ICollection<Comment> GetAll()
         {
             return _repo.GetAll();
         }
 
-        // GET api/<UserTaggedPostController>/5
+        // GET api/<CommentsController>/5
         [HttpGet("{id}")]
-        public UserTaggedPost GetById(int id)
+        public Comment GetById(int id)
         {
             return _repo.GetById(id);
         }
 
+        // POST api/<CommentsController>
         [HttpPost]
-        public Task<UserTaggedPost> Post(UserTaggedPost tag)
+        public void Post(Comment comment)
         {
-            return _repo.Add(tag);
+            _repo.Add(comment);
         }
 
-
-               // DELETE api/<UserTaggedPostController>/5
+        // DELETE api/<CommentsController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-           _repo.Delete(id);
+            _repo.Delete(id);
         }
     }
 }

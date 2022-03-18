@@ -13,9 +13,9 @@ namespace fakeLook_starter.Controllers
     public class TagsController : ControllerBase
     {
 
-        private IUneditableRepository<Tag> _repo;
+        private ITagsRepository _repo;
 
-        public TagsController(IUneditableRepository<Tag> tagsRepository)
+        public TagsController(ITagsRepository tagsRepository)
         {
             _repo = tagsRepository;
         }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace fakeLook_starter.Repositories
 {
-    public class TagsRepository : IUneditableRepository<Tag>
+    public class TagsRepository : ITagsRepository
     {
 
         readonly private DataContext _context;

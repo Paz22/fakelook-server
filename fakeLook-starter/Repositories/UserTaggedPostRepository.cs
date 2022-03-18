@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace fakeLook_starter.Repositories
 {
-    public class UserTaggedPostRepository: IUneditableRepository<UserTaggedPost>
+    public class UserTaggedPostRepository: IUserTaggedPostRepository
     {
 
 

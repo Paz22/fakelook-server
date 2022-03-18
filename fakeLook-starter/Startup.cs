@@ -55,6 +55,13 @@ namespace fakeLook_starter
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddTransient<IPostRepository, PostRepository>();
             services.AddTransient<IDtoConverter, DtoConverter>();
+            services.AddTransient<ILikeRepository, LikesRepository>();
+            services.AddTransient<ICommentRepository, CommentsRepository>();
+            services.AddTransient<IUserTaggedCommentRepository, UserTaggedCommentRepository>();
+            services.AddTransient<IUserTaggedPostRepository, UserTaggedPostRepository>();
+            services.AddTransient<ITagsRepository, TagsRepository>();
+
+
 
 
             #region Setting DB configuration

@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace fakeLook_starter.Repositories
 {
-    public class CommentsRepository : IUneditableRepository<Comment>
+    public class CommentsRepository : ICommentRepository
     {
 
         readonly private DataContext _context;
-        private readonly IUneditableRepository<UserTaggedComment> _userTaggedRepo;
+        private readonly IUserTaggedCommentRepository _userTaggedRepo;
         private IDtoConverter _converter;
-        public CommentsRepository(DataContext context, IDtoConverter dtoConverter, IUneditableRepository<UserTaggedComment> userTaggedRepo)
+        public CommentsRepository(DataContext context, IDtoConverter dtoConverter, IUserTaggedCommentRepository userTaggedRepo)
         {
             _context = context;
             _converter = dtoConverter;

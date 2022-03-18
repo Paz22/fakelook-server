@@ -14,9 +14,9 @@ namespace fakeLook_starter.Controllers
     public class LikesController : ControllerBase
     {
 
-        private IUneditableRepository<Like> _repo;
+        private ILikeRepository _repo;
 
-        public LikesController(IUneditableRepository<Like> likeRepository)
+        public LikesController(ILikeRepository likeRepository)
         {
             _repo = likeRepository;
         }
