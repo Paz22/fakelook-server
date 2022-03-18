@@ -18,8 +18,8 @@ namespace fakeLook_starter.Repositories
         private readonly IUneditableRepository<UserTaggedPost> _userTaggedPostRepo;
 
         private IDtoConverter _converter;
-        public PostRepository(DataContext context, IDtoConverter dtoConverter, IUneditableRepository<UserTaggedPost> userTaggedrepo,
-            IUneditableRepository<Tag> tagsRepo, IUneditableRepository<Like> likeRepo, IUneditableRepository<Comment> commentsRepo)
+        public PostRepository(DataContext context, IDtoConverter dtoConverter, IUserTaggedPostRepository userTaggedrepo,
+          ITagsRepository tagsRepo, ILikeRepository likeRepo, ICommentRepository commentsRepo)
         {
             _context = context;
             _converter = dtoConverter;
@@ -31,11 +31,13 @@ namespace fakeLook_starter.Repositories
 
         public async Task<Post> Add(Post item)
         {
+            if(item.Tags!=null)
             foreach(Tag tag in item.Tags)
             {
                 await _tagRepo.Add(tag);
-            } 
-            foreach(UserTaggedPost userTagged in item.UserTaggedPost)
+            }
+            if (item.UserTaggedPost != null)
+                foreach (UserTaggedPost userTagged in item.UserTaggedPost)
             {
                 await _userTaggedPostRepo.Add(userTagged);
             }

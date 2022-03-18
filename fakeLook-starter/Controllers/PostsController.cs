@@ -28,7 +28,7 @@ namespace fakeLook_starter.Controllers
 
         //GET: api/<PostsController>
         [HttpGet]
-        [Route("/GetAllPosts")]
+        [Route("GetAllPosts")]
         //[TypeFilter(typeof(GetUserActionFilter))]
         public IEnumerable<Post> GetAll()
         {
@@ -37,7 +37,7 @@ namespace fakeLook_starter.Controllers
 
         // GET api/<PostsController>/5
         [HttpGet]
-        [Route("/GetPostById")]
+        [Route("GetPostById")]
         [TypeFilter(typeof(GetUserActionFilter))]
         public Post GetById(int id)
         {
@@ -46,8 +46,8 @@ namespace fakeLook_starter.Controllers
 
         // POST api/<PostsController>
         [HttpPost]
-        [Route("/AddPost")]
-        [TypeFilter(typeof(GetUserActionFilter))]
+        [Route("AddPost")]
+        //[TypeFilter(typeof(GetUserActionFilter))]
         public void Post(Post post)
         {
             _repo.Add(post);
@@ -55,7 +55,7 @@ namespace fakeLook_starter.Controllers
 
         // PUT api/<PostsController>/5
         [HttpPut]
-        [Route("/EditPost")]
+        [Route("EditPost")]
         [TypeFilter(typeof(GetUserActionFilter))]
         public void Put(Post post)
         {
@@ -64,7 +64,7 @@ namespace fakeLook_starter.Controllers
 
         // DELETE api/<PostsController>/5
         [HttpDelete]
-        [Route("/DeletePost")]
+        [Route("DeletePost")]
         [TypeFilter(typeof(GetUserActionFilter))]
         public Task<Post> Delete(int id)
         {
@@ -72,7 +72,7 @@ namespace fakeLook_starter.Controllers
         }
 
         [HttpGet]
-        [Route("/getPostsByFilteredBlocked")]
+        [Route("GetPostsByFilteredBlocked")]
         [TypeFilter(typeof(GetUserActionFilter))]
         public IEnumerable<Post> GetFriendsPosts(int userId)
         {
@@ -87,7 +87,7 @@ namespace fakeLook_starter.Controllers
 
 
         [HttpPost]
-        [Route("/Filter")]
+        [Route("Filter")]
         public async Task<Post> Filter(Filter filter)
         {
             var res = _repo.GetByPredicate(post =>
