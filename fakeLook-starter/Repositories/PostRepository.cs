@@ -24,27 +24,45 @@ namespace fakeLook_starter.Repositories
             _context = context;
             _converter = dtoConverter;
             _commentRepo = commentsRepo;
-            _likeRepo=likeRepo;
-            _tagRepo=tagsRepo;
+            _likeRepo = likeRepo;
+            _tagRepo = tagsRepo;
             _userTaggedPostRepo = userTaggedrepo;
         }
 
         public async Task<Post> Add(Post item)
         {
-            if(item.Tags!=null)
-            foreach(Tag tag in item.Tags)
-            {
-                await _tagRepo.Add(tag);
+            
+                List<Tag> tags = new List<Tag>();
+                if (item.Tags != null)
+                {
+                    tags = item.Tags.ToList();
+                    item.Tags.Clear();
+                }
+
+                var res = _context.Posts.Add(item);
+                 _context.SaveChangesAsync();
+                foreach (var tag in tags)
+                {
+                    res.Entity.Tags.Add(tag);
+                }
+                 _context.SaveChangesAsync();
+                return res.Entity;
+                //if (item.Tags != null)
+                //    foreach (Tag tag in item.Tags)
+                //    {
+                //        _tagRepo.Add(tag);
+                //    }
+                //var res = _context.Posts.Add(item);
+
+                //if (item.UserTaggedPost != null)
+                //    foreach (UserTaggedPost userTagged in item.UserTaggedPost)
+                //    {
+                //        userTagged.PostId = res.Entity.Id;
+                //        _userTaggedPostRepo.Add(userTagged);
+                //    }
+                //await _context.SaveChangesAsync();
+                //return _converter.DtoPost(res.Entity);
             }
-            if (item.UserTaggedPost != null)
-                foreach (UserTaggedPost userTagged in item.UserTaggedPost)
-            {
-                await _userTaggedPostRepo.Add(userTagged);
-            }
-            var res = _context.Posts.Add(item);
-            await _context.SaveChangesAsync();
-            return _converter.DtoPost(res.Entity);
-        }
 
         public async Task<Post> Delete(int id)
         {
@@ -55,11 +73,11 @@ namespace fakeLook_starter.Repositories
             }
             foreach (Tag tag in post.Tags)
             {
-                 await _tagRepo.Delete(tag.Id);
+                await _tagRepo.Delete(tag.Id);
             }
             foreach (UserTaggedPost userTagged in post.UserTaggedPost)
             {
-                 await _userTaggedPostRepo.Delete(userTagged.Id);
+                await _userTaggedPostRepo.Delete(userTagged.Id);
             }
             foreach (Like like in post.Likes)
             {
@@ -85,7 +103,7 @@ namespace fakeLook_starter.Repositories
 
         public async Task<Post> Edit(Post item) //TODO rewrite and split to cases!
         {
-            item.IsEdited = true;            
+            item.IsEdited = true;
             var temp = _context.Posts.FirstOrDefault(u => u.Id == item.Id);
             if (temp == null)
             {
@@ -104,11 +122,11 @@ namespace fakeLook_starter.Repositories
         public ICollection<Post> GetAll()
         {
             return _context.Posts
-                .Include(p=>p.Likes).ThenInclude(p=>p.User)
+                .Include(p => p.Likes).ThenInclude(p => p.User)
                 .Include(p => p.User)
                 .Include(p => p.Comments).ThenInclude(c => c.User)
-                .Include(p=>p.UserTaggedPost).ThenInclude(t=>t.User)
-                .Select( dtoLogic).ToList();
+                .Include(p => p.UserTaggedPost).ThenInclude(t => t.User)
+                .Select(dtoLogic).ToList();
         }
 
         public Post GetById(int id)
@@ -152,7 +170,7 @@ namespace fakeLook_starter.Repositories
             return dtoPost;
         }
 
-      
+
 
 
         public ICollection<Post> GetByPredicate(Func<Post, bool> predicate)
