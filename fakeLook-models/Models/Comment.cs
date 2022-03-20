@@ -10,7 +10,6 @@ namespace fakeLook_models.Models
 {
     public class Comment
     {
-        [ForeignKey("Post")]
         public int Id { get; set; }
         public string Content { get; set; }
 
