@@ -20,6 +20,8 @@ namespace fakeLook_starter.Interfaces
     {
         public User getByUser(User user);
 
+        public bool UserExists(string userName);
+
     }
     public interface IPostRepository : IRepository<Post>
     {

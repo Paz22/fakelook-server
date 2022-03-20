@@ -36,7 +36,7 @@ namespace fakeLook_starter.Repositories
 
         public async Task<User> Add(User item)
         {
-            if (UserExists(item))
+            if (UserExists(item.UserName))
             {
                 return item;//TODO
             }
@@ -48,11 +48,13 @@ namespace fakeLook_starter.Repositories
             }
         }
 
-        private bool UserExists(User user)
+        public bool UserExists(string userName)
         {
-            var res = _context.Users.Where(item => item.UserName == user.UserName).SingleOrDefault();
+            var res = _context.Users.Where(item => item.UserName == userName).SingleOrDefault();
             return res != null;
         }
+
+       
 
         public async Task<User> Edit(User item)
         {
@@ -63,7 +65,7 @@ namespace fakeLook_starter.Repositories
             }
             _context.Entry<User>(temp).CurrentValues.SetValues(item);
             await _context.SaveChangesAsync();
-            if (!UserExists(item))
+            if (!UserExists(item.UserName))
             {
                 //TODO
             }
