@@ -85,17 +85,43 @@ namespace fakeLook_starter.Repositories
 
 
 
-        public async Task<Post> Edit(Post item) //TODO rewrite and split to cases!
+        public  async Task<Post> Edit(Post item) //TODO rewrite and split to cases!
         {
-            item.IsEdited = true;
-            var temp = _context.Posts.FirstOrDefault(u => u.Id == item.Id);
-            if (temp == null)
+            ICollection<Tag> varTags = new List<Tag>();
+            for (var i = 0; i < item.Tags.Count; i++)
             {
-                return null;//TODO
+                varTags.Add(await _tagRepo.Add(item.Tags.ElementAt(i)));
             }
-            _context.Entry<Post>(temp).CurrentValues.SetValues(item);
-            await _context.SaveChangesAsync();
-            return _converter.DtoPost(item);
+            ICollection<UserTaggedPost> varTagsUser = new List<UserTaggedPost>();
+            for (var i = 0; i < item.UserTaggedPost.Count; i++)
+            {
+                varTagsUser.Add(await _userTaggedPostRepo.Add(item.UserTaggedPost.ElementAt(i)));
+            }
+            item.Tags = varTags;
+            item.UserTaggedPost = varTagsUser;
+            _context.Entry(item).State = EntityState.Modified;
+            var res = _context.Posts.SingleOrDefault(P => P.Id == item.Id);
+            _context.SaveChanges();
+
+            return res;
+            //var entity  = _context.Posts.SingleOrDefault(P=>P.Id == item.Id);
+            //if (entity == null)
+            //{
+            //    return null;
+            //}
+            //entity.Description=item.Description;
+            //_context.Entry(entity).CurrentValues.SetValues(item);
+            //await _context.SaveChangesAsync();
+            //return entity;
+            //item.IsEdited = true;
+            //var temp = _context.Posts.FirstOrDefault(u => u.Id == item.Id);
+            //if (temp == null)
+            //{
+            //    return null;//TODO
+            //}
+            //_context.Entry<Post>(temp).CurrentValues.SetValues(item);
+            // _context.SaveChangesAsync();
+            //return item;                
         }
 
         public ICollection<Block> getAllBlockedByUser(int id)
