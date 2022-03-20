@@ -104,5 +104,14 @@ namespace fakeLook_starter.Controllers
             var user = _repo.GetById(int.Parse(_tokenService.GetPayload(token)));
             return user;
         }
+
+        [HttpPost]
+        [Route("checkUserNameValidity")]
+
+        public bool isUserNameExist(string userName)
+        {
+            return _repo.UserExists(userName);
+        }
+
     }
 }

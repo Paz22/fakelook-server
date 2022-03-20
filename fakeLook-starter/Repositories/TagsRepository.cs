@@ -20,7 +20,7 @@ namespace fakeLook_starter.Repositories
             _converter = dtoConverter;
         }
 
-        private bool TagExist(string content)
+        public bool TagExist(string content)
         {
             var res = _context.Tags.Where(item => item.Content.Equals( content)).SingleOrDefault();
             return res != null;
@@ -32,10 +32,10 @@ namespace fakeLook_starter.Repositories
             if (!TagExist(item.Content))
             {
                 var res = _context.Tags.Add(item);
-                await _context.SaveChangesAsync();
+                 _context.SaveChanges();
                 return res.Entity;
             }
-            return item;
+            return _context.Tags.SingleOrDefault(p=>p.Content.Equals(item.Content));
         }
 
         public async Task<Tag> Delete(int id)

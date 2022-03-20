@@ -27,5 +27,8 @@ namespace fakeLook_starter.Interfaces
     {}
 
     public interface ITagsRepository : IUneditableRepository<Tag>
-    { }
+    {
+
+        bool TagExist(string content);
+    }
 }

@@ -38,7 +38,7 @@ namespace fakeLook_starter.Controllers
         // GET api/<PostsController>/5
         [HttpGet]
         [Route("GetPostById")]
-        [TypeFilter(typeof(GetUserActionFilter))]
+        //[TypeFilter(typeof(GetUserActionFilter))]
         public Post GetById(int id)
         {
             return _repo.GetById(id);
@@ -94,9 +94,9 @@ namespace fakeLook_starter.Controllers
             {
 
                 bool date = checkDate(post.Date, filter.startingDate, filter.endingDate);
-                bool publishers = checkPublishers(post.UserId, filter.Publishers);
                 bool taggs = checkTaggs(post.Tags, filter.tags);
                 bool taggedUsers = checkTagged(post.UserTaggedPost, filter.taggedUsers);
+                bool publishers = checkPublishers(post.UserId, filter.Publishers);
                 return date && publishers && taggedUsers && taggedUsers;
             });
             return null;
@@ -110,22 +110,22 @@ namespace fakeLook_starter.Controllers
             }
             else if (!startingDate.HasValue && endingDate.HasValue)
             {
-                date = (postDate < endingDate);
+                date = (postDate <= endingDate);
             }
             else if (startingDate.HasValue && !endingDate.HasValue)
             {
-                date = (postDate < startingDate);
+                date = (postDate <= startingDate);
             }
             else
             {
-                date = (postDate < startingDate && postDate < endingDate);
+                date = (postDate >= startingDate && postDate <= endingDate);
             }
             return date;
         }
 
         private bool checkPublishers(int userId, ICollection<string> publishers)
         {
-            if (publishers.Count == 0)
+            if (publishers == null)
             {
                 return true;
             }
@@ -134,7 +134,7 @@ namespace fakeLook_starter.Controllers
         }
         private bool checkTaggs(ICollection<Tag> postTags, ICollection<string> taggs)
         {
-            if (taggs.Count == 0)
+            if (postTags==null)
             {
                 return true;
             }
@@ -153,7 +153,7 @@ namespace fakeLook_starter.Controllers
 
         private bool checkTagged(ICollection<UserTaggedPost> taggedPost, ICollection<string> taggedFilter)
         {
-            if (taggedFilter.Count == 0)
+            if (taggedFilter.Count == 0 || taggedPost==null)
             {
                 return true;
             }
