@@ -82,6 +82,8 @@ namespace fakeLook_starter.Controllers
             return allPosts.Where(p => !blockedId.Contains(p.UserId));
         }
 
+        
+
        
 
 
