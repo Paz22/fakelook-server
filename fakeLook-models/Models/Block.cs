@@ -9,8 +9,8 @@ namespace fakeLook_models.Models
 {
     public class Block
     {
-        [Key]
         public int Id { get; set; }
+        [Key]
         public int BlockerUserId { get; set; }
         public int BlockedUserId { get; set; }
 

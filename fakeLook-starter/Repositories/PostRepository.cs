@@ -34,10 +34,10 @@ namespace fakeLook_starter.Repositories
 
         public async Task<Post> Add(Post item)
         {
-            ICollection<Tag> varTags=new List<Tag>();
-            for(var i=0;i<item.Tags.Count;i++)
+            ICollection<Tag> varTags = new List<Tag>();
+            for (var i = 0; i < item.Tags.Count; i++)
             {
-                varTags.Add(await _tagRepo.Add(item.Tags.ElementAt(i)));  
+                varTags.Add(await _tagRepo.Add(item.Tags.ElementAt(i)));
             }
             item.Tags = varTags;
             var res = _context.Posts.Add(item);

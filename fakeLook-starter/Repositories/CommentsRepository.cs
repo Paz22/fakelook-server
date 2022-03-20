@@ -12,23 +12,28 @@ namespace fakeLook_starter.Repositories
 
         readonly private DataContext _context;
         private readonly IUserTaggedCommentRepository _userTaggedRepo;
+        private readonly ITagsRepository _tagsRepo;
+
         private IDtoConverter _converter;
-        public CommentsRepository(DataContext context, IDtoConverter dtoConverter, IUserTaggedCommentRepository userTaggedRepo)
+        public CommentsRepository(DataContext context, IDtoConverter dtoConverter, IUserTaggedCommentRepository userTaggedRepo,ITagsRepository tagsRepo)
         {
             _context = context;
             _converter = dtoConverter;
             _userTaggedRepo = userTaggedRepo;
+            _tagsRepo = tagsRepo;
         }
 
         public async Task<Comment> Add(Comment item)
         {
-            foreach(UserTaggedComment userTagged in item.UserTaggedComment)
+            ICollection<Tag> varTags = new List<Tag>();
+            for (var i = 0; i < item.Tags.Count; i++)
             {
-                await _userTaggedRepo.Add(userTagged);
+                varTags.Add(await _tagsRepo.Add(item.Tags.ElementAt(i)));
             }
-            var addUserTagged = _context.Add(item);
-            await _context.SaveChangesAsync();
-            return addUserTagged.Entity;
+            item.Tags = varTags;
+            var addComment = _context.Add(item);
+            _context.SaveChanges();
+            return addComment.Entity;
         }
 
         public async Task<Comment> Delete(int id)

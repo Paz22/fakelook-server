@@ -28,14 +28,14 @@ namespace fakeLook_starter.Repositories
             else
             {
                 var addedlike= _context.Add(item);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return addedlike.Entity;
             }
         }
 
         private bool LikeExist(Like item)
         {
-            var like = _context.Likes.Where(l => l.UserId == item.UserId && l.PostId == item.PostId);
+            var like = _context.Likes.SingleOrDefault(l => l.UserId == item.UserId && l.PostId == item.PostId);
             return like != null;
         }
 

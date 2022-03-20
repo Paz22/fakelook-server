@@ -61,7 +61,7 @@ namespace fakeLook_starter.Controllers
                 return Problem("Couldn't Add User");
             }
             var token = _tokenService.CreateToken(dbUser);
-            return Ok(new { token });
+            return Ok(new { token, dbUser.Id, dbUser.UserName, dbUser.ProfilePic });
         }
 
         // PUT api/<User>/5
@@ -82,7 +82,7 @@ namespace fakeLook_starter.Controllers
                 return Problem("User can not be found");
             }
             var token = _tokenService.CreateToken(dbUser);
-            return Ok(new{ token,dbUser.Id,dbUser.UserName});
+            return Ok(new{ token,dbUser.Id,dbUser.UserName,dbUser.ProfilePic});
 
 
         }

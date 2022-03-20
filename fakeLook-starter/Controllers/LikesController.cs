@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace fakeLook_starter.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/LikesAPI")]
     [ApiController]
     public class LikesController : ControllerBase
     {
