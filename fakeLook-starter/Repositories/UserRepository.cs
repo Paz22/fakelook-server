@@ -54,7 +54,13 @@ namespace fakeLook_starter.Repositories
             return res != null;
         }
 
-       
+        public bool userNameTaken(string userName,int id)
+        {
+            var res = _context.Users.Where(item => item.UserName == userName && item.Id!=id).SingleOrDefault();
+            return res != null;
+        }
+
+
 
         public async Task<User> Edit(User item)
         {

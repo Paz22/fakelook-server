@@ -6,6 +6,7 @@ using fakeLook_starter.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -82,10 +83,6 @@ namespace fakeLook_starter.Controllers
             return allPosts.Where(p => !blockedId.Contains(p.UserId));
         }
 
-        
-
-       
-
 
 
         [HttpPost]
@@ -95,10 +92,10 @@ namespace fakeLook_starter.Controllers
             var res = _repo.GetByPredicate(post =>
             {
 
-                bool date = checkDate(post.Date, filter.startingDate, filter.endingDate);
                 bool taggs = checkTaggs(post.Tags, filter.tags);
                 bool taggedUsers = checkTagged(post.UserTaggedPost, filter.taggedUsers);
                 bool publishers = checkPublishers(post.UserId, filter.Publishers);
+                bool date = checkDate(post.Date, filter.startingDate, filter.endingDate);
                 return date && publishers && taggedUsers && taggedUsers;
             });
             return null;

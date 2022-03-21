@@ -20,7 +20,7 @@ namespace fakeLook_starter.Repositories
         }
         public async Task<UserTaggedComment> Add(UserTaggedComment item)
         {
-            if (!TagExist(item))
+            if (!tagExist(item))
             {
                 var res = _context.UserTaggedComments.Add(item);
                 await _context.SaveChangesAsync();
@@ -29,7 +29,7 @@ namespace fakeLook_starter.Repositories
             return null;
         }
 
-        private bool TagExist(UserTaggedComment item)
+        private bool tagExist(UserTaggedComment item)
         {
             var exist = _context.UserTaggedComments.Where(p => p.UserId == item.UserId && p.CommentId == item.CommentId);
             return exist != null;
