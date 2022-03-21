@@ -108,9 +108,9 @@ namespace fakeLook_starter.Controllers
         [HttpPost]
         [Route("checkUserNameValidity")]
 
-        public bool isUserNameExist(string userName)
+        public bool isUserNameExist(string userName,int id)
         {
-            return _repo.UserExists(userName);
+            return _repo.userNameTaken(userName,id);
         }
 
     }

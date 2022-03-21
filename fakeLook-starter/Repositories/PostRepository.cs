@@ -12,16 +12,16 @@ namespace fakeLook_starter.Repositories
     public class PostRepository : IPostRepository
     {
         readonly private DataContext _context;
-        private readonly IUneditableRepository<Comment> _commentRepo;
-        private readonly IUneditableRepository<Like> _likeRepo;
+        private readonly IRepository<Comment> _commentRepo;
+        private readonly ILikeRepository _likeRepo;
         private readonly ITagsRepository _tagRepo;
-        private readonly IUneditableRepository<UserTaggedPost> _userTaggedPostRepo;
-        private readonly IUneditableRepository<UserTaggedComment> _userTaggedCommentRepo;
+        private readonly IUserTaggedPostRepository _userTaggedPostRepo;
+        private readonly IUserTaggedCommentRepository _userTaggedCommentRepo;
 
 
         private IDtoConverter _converter;
         public PostRepository(DataContext context, IDtoConverter dtoConverter, IUserTaggedPostRepository userTaggedrepo,
-          ITagsRepository tagsRepo, ILikeRepository likeRepo, ICommentRepository commentsRepo)
+          ITagsRepository tagsRepo, ILikeRepository likeRepo, IRepository<Comment> commentsRepo)
         {
             _context = context;
             _converter = dtoConverter;

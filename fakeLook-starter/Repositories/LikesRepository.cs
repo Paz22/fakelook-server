@@ -23,7 +23,16 @@ namespace fakeLook_starter.Repositories
         {
             if(LikeExist(item))
             {
-                return await Delete(item.Id);
+                var like = _context.Likes.SingleOrDefault(l => l.UserId == item.UserId && l.PostId == item.PostId);
+                if(like.IsActive)
+                {
+                    return await Delete(like.Id);
+                }
+                else
+                {
+                    like.IsActive = true;
+                    return like;
+                }
             }
             else
             {
@@ -43,7 +52,7 @@ namespace fakeLook_starter.Repositories
         {
            var like = GetById(id);
            like.IsActive = false;
-           await _context.SaveChangesAsync();
+           _context.SaveChanges();
            return like;
         }
 

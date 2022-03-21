@@ -22,7 +22,7 @@ namespace fakeLook_starter.Repositories
 
         public bool TagExist(string content)
         {
-            var res = _context.Tags.Where(item => item.Content.Equals( content)).SingleOrDefault();
+            var res = _context.Tags.Where(item => item.Content.Equals(content)).SingleOrDefault();
             return res != null;
         }
 
