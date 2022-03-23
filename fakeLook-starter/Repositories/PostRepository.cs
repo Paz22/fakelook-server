@@ -109,29 +109,29 @@ namespace fakeLook_starter.Repositories
         {
             var dtoPost = _converter.DtoPost(p);
             dtoPost.User = _converter.DtoUser(p.User);
-            dtoPost.Comments = p.Comments.Select(c =>
+            dtoPost.Comments = p.Comments!=null?p.Comments.Select(c =>
             {
                 var dtoComment = _converter.DtoComment(c);
                 dtoComment.User = _converter.DtoUser(c.User);
                 return dtoComment;
-            }).ToArray();
-            dtoPost.Likes = p.Likes.Select(l =>
+            }).ToArray():new List<Comment>();
+            dtoPost.Likes = p.Likes!=null?p.Likes.Select(l =>
             {
                 var dtoLike = _converter.DtoLike(l);
                 dtoLike.User = _converter.DtoUser(l.User);
                 return dtoLike;
-            }).ToArray();
-            //dtoPost.Tags = p.Tags.Select(c =>
-            //{
-            //    var dtoTag = _converter.DtoTag(c);
-            //    return dtoTag;
-            //}).ToArray();
-            dtoPost.UserTaggedPost = p.UserTaggedPost.Select(c =>
+            }).ToArray(): new List<Like>();
+            dtoPost.Tags = p.Tags!=null?p.Tags.Select(c =>
+            {
+                var dtoTag = _converter.DtoTag(c);
+                return dtoTag;
+            }).ToArray(): new List<Tag>();
+            dtoPost.UserTaggedPost = p.UserTaggedPost!=null?p.UserTaggedPost.Select(c =>
             {
                 var dtoUsersTaggedPost = _converter.DtoUserTaggedPost(c);
-                dtoUsersTaggedPost.User = _converter.DtoUser(c.User);
+                //dtoUsersTaggedPost.User = _converter.DtoUser(c.User);
                 return dtoUsersTaggedPost;
-            }).ToArray();
+            }).ToArray(): new List<UserTaggedPost>();
             return dtoPost;
         }
 
