@@ -20,12 +20,14 @@ namespace fakeLook_starter.Repositories
             _converter = dtoConverter;
         }
 
+        //Returns whether or not a tag element exists
         public bool TagExist(string content)
         {
             var res = _context.Tags.Where(item => item.Content.Equals(content)).SingleOrDefault();
             return res != null;
         }
 
+        //Adding new tag to the DB via the context data
 
         public async Task<Tag> Add(Tag item)
         {
@@ -38,6 +40,7 @@ namespace fakeLook_starter.Repositories
             return _context.Tags.SingleOrDefault(p=>p.Content.Equals(item.Content));
         }
 
+        //Deleting existing tag from the DB via context data
         public async Task<Tag> Delete(int id)
         {
             var tag = GetById(id);
@@ -50,11 +53,13 @@ namespace fakeLook_starter.Repositories
             return removed.Entity;
         }
 
+        //Returns all the tags from the DB
         public ICollection<Tag> GetAll()
         {
             return _context.Tags.ToList();
         }
 
+        //Given it's id,returning the tag from the DB
         public Tag GetById(int id)
         {
             return _context.Tags.Where((item) => item.Id == id).FirstOrDefault();

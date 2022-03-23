@@ -12,44 +12,33 @@ namespace fakeLook_starter.Repositories
     public class PostRepository : IPostRepository
     {
         readonly private DataContext _context;
-        private readonly ICommentRepository _commentRepo;
-        private readonly ILikeRepository _likeRepo;
         private readonly ITagsRepository _tagRepo;
-        private readonly IUserTaggedPostRepository _userTaggedPostRepo;
-        private readonly IUserTaggedCommentRepository _userTaggedCommentRepo;
-
-
         private IDtoConverter _converter;
-        public PostRepository(DataContext context, IDtoConverter dtoConverter, IUserTaggedPostRepository userTaggedrepo,
-          ITagsRepository tagsRepo, ILikeRepository likeRepo, ICommentRepository commentsRepo)
+
+
+        public PostRepository(DataContext context, IDtoConverter dtoConverter,ITagsRepository tagsRepo)
         {
             _context = context;
             _converter = dtoConverter;
-            _commentRepo = commentsRepo;
-            _likeRepo = likeRepo;
             _tagRepo = tagsRepo;
-            _userTaggedPostRepo = userTaggedrepo;
         }
 
-
+        //Adding new post to the DB via the context data
         public async Task<Post> Add(Post item)
         {
             ICollection<Tag> varTags = new List<Tag>();
             if(item.Tags!=null)
             for (var i = 0; i < item.Tags.Count; i++)
             {
-                varTags.Add(await _tagRepo.Add(item.Tags.ElementAt(i)));
+                varTags.Add(await _tagRepo.Add(item.Tags.ElementAt(i))); //the content is unique
             }
             item.Tags = varTags;
             var res = _context.Posts.Add(item);
             var entries=_context.SaveChanges();
-            if(entries==0)
-            {
-                //TODO
-            }
             return res.Entity;                
         }
 
+        //Deleting existing to the DB via the context data
         public async Task<Post> Delete(int id)
         {
             var post = _context.Posts.SingleOrDefault(p => p.Id == id);
@@ -62,20 +51,21 @@ namespace fakeLook_starter.Repositories
             return _converter.DtoPost(post);
         }
 
+        //Given Username Id returning it's username
         public string getUsernameById(int id) //for internal use only,hence not writing dto
         {
             return _context.Users.SingleOrDefault(u => u.Id == id).UserName;
         }
 
 
-
-        public  async Task<Post> Edit(Post item) //TODO rewrite and split to cases!
+        //Editing existing post 
+        public  async Task<Post> Edit(Post item) 
         {
             var existingPost = _context.Posts
-       .Where(p => p.Id == item.Id)
-       .Include(p => p.Tags)
-       .Include(p=>p.UserTaggedPost)
-       .SingleOrDefault();
+           .Where(p => p.Id == item.Id)
+           .Include(p => p.Tags)
+           .Include(p=>p.UserTaggedPost)
+           .SingleOrDefault();
             if (existingPost != null)
             {
                 // Update parent
@@ -119,7 +109,7 @@ namespace fakeLook_starter.Repositories
                     existingPost.Tags.Add(newTag);
                 }
             }
-            //---------------------------------
+            
             if (item.UserTaggedPost != null)
                 foreach (var userTag in item.UserTaggedPost)
                 {
@@ -147,12 +137,10 @@ namespace fakeLook_starter.Repositories
 
             _context.SaveChanges();
             return existingPost;
-
-
         }
 
        
-
+        //Returning all posts exist on the DB
         public ICollection<Post> GetAll()
         {
             return _context.Posts
@@ -164,6 +152,7 @@ namespace fakeLook_starter.Repositories
                 .Select(dtoLogic).ToList();
         }
 
+        //Given it's id,returning post
         public Post GetById(int id)
         {
             return _context.Posts
@@ -172,7 +161,7 @@ namespace fakeLook_starter.Repositories
                 .Include(p => p.Comments).ThenInclude(c => c.User)
                 .Include(p => p.Tags)
                 .Include(p => p.UserTaggedPost).ThenInclude(t => t.User)
-                .Select(p => dtoLogic(p))
+                .Select(dtoLogic)
 
                 .SingleOrDefault(p => p.Id == id);
         }
@@ -241,7 +230,7 @@ namespace fakeLook_starter.Repositories
 
 
 
-
+        //Given func that gets post and returns boolean value,return sub group of the posts from the DB
         public ICollection<Post> GetByPredicate(Func<Post, bool> predicate)
         {
             return _context.Posts.Include(p=>p.Tags).Include(p=>p.UserTaggedPost).Where(predicate).Select(p=>dtoLogic(p)).ToList();

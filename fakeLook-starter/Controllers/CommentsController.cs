@@ -12,9 +12,9 @@ namespace fakeLook_starter.Controllers
     public class CommentsController : ControllerBase
     {
 
-        private IRepository<Comment> _repo;
+        private ICommentRepository _repo;
 
-        public CommentsController(IRepository<Comment> commentRepository)
+        public CommentsController(ICommentRepository commentRepository)
         {
             _repo = commentRepository;
         }

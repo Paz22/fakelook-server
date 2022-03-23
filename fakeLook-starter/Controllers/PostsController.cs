@@ -72,19 +72,7 @@ namespace fakeLook_starter.Controllers
             return _repo.Delete(id);
         }
 
-        //[HttpGet]
-        //[Route("GetPostsByFilteredBlocked")]
-        //[TypeFilter(typeof(GetUserActionFilter))]
-        //public IEnumerable<Post> GetFriendsPosts(int userId)
-        //{
-        //    ICollection<Post> allPosts=_repo.GetAll();
-        //    ICollection<Block> blocked = _repo.getAllBlockedByUser(userId);
-        //    IEnumerable<int> blockedId = blocked.Select(x => x.BlockedUserId);
-        //    return allPosts.Where(p => !blockedId.Contains(p.UserId));
-        //}
-
-
-
+  
         [HttpPost]
         [Route("Filter")]
         public ICollection<Post> Filter(Filter filter)

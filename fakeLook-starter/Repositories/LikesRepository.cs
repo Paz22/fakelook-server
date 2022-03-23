@@ -18,7 +18,7 @@ namespace fakeLook_starter.Repositories
             _context = context;
             _converter = dtoConverter;
         }
-
+         //Adding new like element to the DB via the context data
         public async Task<Like> Add(Like item)
         {
             if (LikeExist(item))
@@ -47,12 +47,16 @@ namespace fakeLook_starter.Repositories
             }   
         }
 
+        //Returns whether or not a like element exists
+
         private bool LikeExist(Like item)
         {
             var like = _context.Likes.SingleOrDefault(l => l.UserId == item.UserId && l.PostId == item.PostId);
             return like != null;
         }
 
+
+        //Deactivating existing like from the DB via the data context
         public async Task<Like> Delete(int id)
         {
 
@@ -62,11 +66,13 @@ namespace fakeLook_starter.Repositories
            return like;
         }
 
+        //Returning all the existing likes from the DB via the data context
         public ICollection<Like> GetAll()
         {
             return _context.Likes.ToList();
         }
 
+        //Given it's id,returning like from the DB
         public Like GetById(int id)
         {
             return _context.Likes.Where(_like => _like.Id == id).FirstOrDefault();

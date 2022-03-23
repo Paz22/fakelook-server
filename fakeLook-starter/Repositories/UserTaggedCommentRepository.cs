@@ -18,6 +18,8 @@ namespace fakeLook_starter.Repositories
             _context = context;
             _converter = dtoConverter;
         }
+
+        //Adding tag to the DB via the data context
         public async Task<UserTaggedComment> Add(UserTaggedComment item)
         {
             if (!tagExist(item))
@@ -29,12 +31,14 @@ namespace fakeLook_starter.Repositories
             return null;
         }
 
+        //Returning whether or not tag exists in the DB
         private bool tagExist(UserTaggedComment item)
         {
             var exist = _context.UserTaggedComments.Where(p => p.UserId == item.UserId && p.CommentId == item.CommentId);
             return exist != null;
         }
 
+        //Deleting existing tag from the DB
         public async Task<UserTaggedComment> Delete(int id)
         {
             var tag = GetById(id);
@@ -47,11 +51,13 @@ namespace fakeLook_starter.Repositories
             return removed.Entity;
         }
 
+        //Returning all the tags from the DB
         public ICollection<UserTaggedComment> GetAll()
         {
             return _context.UserTaggedComments.ToList();
         }
 
+        //Given it's id,returning tag
         public UserTaggedComment GetById(int id)
         {
             return _context.UserTaggedComments.Where(_context => _context.UserId == id).FirstOrDefault();   

@@ -43,8 +43,6 @@ namespace fakeLook_starter.Controllers
             return _repo.GetById(id);
         }
 
-    
-
         // POST api/<User>
         [HttpPost]
         [Route("Post")]
@@ -88,27 +86,7 @@ namespace fakeLook_starter.Controllers
             return Ok(new{ token,dbUser.Id,dbUser.UserName,dbUser.ProfilePic});
         }
 
-        //[HttpPost]
-        //[Route("addBlocked")]
-        //public User addBlocked(int blockerId,int blockedId)
-        //{
-        //    return _repo.addBlocked(blockerId, blockedId);
-        //}
-
-        //[HttpGet]
-        //[Route("getBlocked")]
-        //public ICollection<int> getAllBlockedByUser(int blockerId)
-        //{
-        //    return _repo.getAllBlockedByUser(blockerId);
-        //}
-
-        //[HttpGet]
-        //[Route("getAllFriends")]
-        //public ICollection<User> getAllFriends(int blockerId)
-        //{
-        //    return _repo.getAllFriends(blockerId);
-        //}
-
+    
         // DELETE api/<User>/5
         [HttpDelete]
         [Route("Delete")]
@@ -133,27 +111,6 @@ namespace fakeLook_starter.Controllers
         {
             return _repo.userNameTaken(userName,id);
         }
-
-        //[HttpPost]
-        //[Route("getFriendsNotBlocked")]
-        //public ICollection<User> getFriendsNotBlocked(int userId)
-        //{
-        //    ICollection<User> notBlocked=new List<User>();
-        //    IList<User> allUsers= (IList<User>)GetAllUsers();
-        //    var allBlocked=GetById(userId).blockedUser;
-        //    for (int i=0;i<allUsers.Count;i++)
-        //    {
-        //        for (int j = 0; j < allBlocked.Count; j++)
-        //        {
-        //            if(allUsers.ElementAt(i).Id!=allBlocked.ElementAt(j).BlockedUserId)
-        //            {
-        //                notBlocked.Add(allUsers.ElementAt(i));
-        //            }
-        //        }
-        //    }
-        //    return notBlocked;
-        //}
-
 
     }
 }

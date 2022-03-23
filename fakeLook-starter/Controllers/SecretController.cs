@@ -15,13 +15,7 @@ namespace auth_example.Controllers
     [Authorize]
     public class SecretController : ControllerBase
     {
-        //[HttpGet]
-        //[AllowAnonymous]
-        //[Route("All")]
-        //public IActionResult All()
-        //{
-        //    return Ok(new { msg = "everybody gets this" });
-        //}
+      
         [HttpGet]
         [Route("Authenticated")]
         [TypeFilter(typeof(GetUserActionFilter))]
