@@ -177,35 +177,65 @@ namespace fakeLook_starter.Repositories
                 .SingleOrDefault(p => p.Id == id);
         }
 
-        private Post dtoLogic(Post p)
+        private Post dtoLogic(Post post)
         {
-            var dtoPost = _converter.DtoPost(p);
-            dtoPost.User = _converter.DtoUser(p.User);
-            dtoPost.Comments = p.Comments.Select(c =>
+            var dtoPost = _converter.DtoPost(post);
+            // User
+            dtoPost.User = _converter.DtoUser(post.User);
+            // User ID
+            dtoPost.UserId = post.UserId;
+            // Comments
+            dtoPost.Comments = post.Comments?.Select(c =>
             {
                 var dtoComment = _converter.DtoComment(c);
+                // User of the comment
                 dtoComment.User = _converter.DtoUser(c.User);
+                // User ID of the comment
+                dtoComment.UserId = c.UserId;
+                // Tags of the comment
+                dtoComment.Tags = c.Tags?.Select(t =>
+                {
+                    var dtoCommentTag = _converter.DtoTag(t);
+                    return dtoCommentTag;
+                }).ToArray();
+                // UserTags of the comment
+                dtoComment.UserTaggedComment = c.UserTaggedComment?.Select(t =>
+                {
+                    var dtoUserTaggedComment = _converter.DtoUserTaggedComment(t);
+                    dtoUserTaggedComment.User = _converter.DtoUser(t.User);
+                    return dtoUserTaggedComment;
+                }).ToArray();
                 return dtoComment;
             }).ToArray();
-            dtoPost.Likes = p.Likes.Select(l =>
+            // Likes
+            dtoPost.Likes = post.Likes?.Select(c =>
             {
-                var dtoLike = _converter.DtoLike(l);
-                dtoLike.User = _converter.DtoUser(l.User);
+                var dtoLike = _converter.DtoLike(c);
+                // Like Id of like
+                dtoLike.Id = c.Id;
+                // User of the like
+                //dtoLike.User = _dtoConverter.DtoUser(c.User);
+                // IsActive of the like
+                dtoLike.IsActive = c.IsActive;
+                // UserId of like
+                dtoLike.UserId = c.UserId;
+                // PostId of like
+                dtoLike.PostId = c.PostId;
                 return dtoLike;
             }).ToArray();
-            dtoPost.Tags = p.Tags.Select(c =>
+            dtoPost.Tags = post.Tags?.Select(c =>
             {
                 var dtoTag = _converter.DtoTag(c);
                 return dtoTag;
             }).ToArray();
-            dtoPost.UserTaggedPost = p.UserTaggedPost.Select(c =>
+            // UserTaggedPost
+            dtoPost.UserTaggedPost = post.UserTaggedPost?.Select(u =>
             {
-                var dtoUsersTaggedPost = _converter.DtoUserTaggedPost(c);
-                dtoUsersTaggedPost.User = _converter.DtoUser(c.User);
-                return dtoUsersTaggedPost;
+                var dtoTaggedPost = _converter.DtoUserTaggedPost(u);
+                dtoTaggedPost.User = _converter.DtoUser(u.User);
+                return dtoTaggedPost;
             }).ToArray();
-            
-       
+
             return dtoPost;
         }
 
@@ -214,7 +244,7 @@ namespace fakeLook_starter.Repositories
 
         public ICollection<Post> GetByPredicate(Func<Post, bool> predicate)
         {
-            return _context.Posts.Include(p=>p.Tags).Include(p=>p.UserTaggedPost).Where(predicate).ToList();
+            return _context.Posts.Include(p=>p.Tags).Include(p=>p.UserTaggedPost).Where(predicate).Select(p=>dtoLogic(p)).ToList();
         }
     }
 }

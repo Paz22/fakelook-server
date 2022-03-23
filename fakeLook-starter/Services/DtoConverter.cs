@@ -33,6 +33,8 @@
 
             public User DtoUser(User user)
             {
+            if (user == null)
+                return new User();
                 return new User() { Id = user.Id, UserName = user.UserName };
             }
 
