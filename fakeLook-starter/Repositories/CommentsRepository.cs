@@ -26,6 +26,7 @@ namespace fakeLook_starter.Repositories
         public async Task<Comment> Add(Comment item)
         {
             ICollection<Tag> varTags = new List<Tag>();
+            if(item.Tags!=null)
             for (var i = 0; i < item.Tags.Count; i++)
             {
                 varTags.Add(await _tagsRepo.Add(item.Tags.ElementAt(i)));
