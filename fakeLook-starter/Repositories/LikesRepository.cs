@@ -21,16 +21,27 @@ namespace fakeLook_starter.Repositories
 
         public async Task<Like> Add(Like item)
         {
-            if(LikeExist(item))
+            if (LikeExist(item))
             {
-                return await Delete(item.Id);
+                var like = _context.Likes.SingleOrDefault(l => l.UserId == item.UserId && l.PostId == item.PostId);
+                if (like.IsActive)
+                {
+                    return await Delete(like.Id);
+                }
+                else
+                {
+                    like.IsActive = true;
+                    _context.SaveChanges();
+                    return like;
+                }
             }
             else
             {
-                var addedlike= _context.Add(item);
+                item.IsActive = true;
+                var addedlike = _context.Add(item);
                 _context.SaveChanges();
                 return addedlike.Entity;
-            }
+            }   
         }
 
         private bool LikeExist(Like item)
@@ -41,10 +52,11 @@ namespace fakeLook_starter.Repositories
 
         public async Task<Like> Delete(int id)
         {
-           var like = GetById(id);
-           like.IsActive = false;
-           await _context.SaveChangesAsync();
-           return like;
+            var like = GetById(id);
+            like.IsActive = false;
+            _context.SaveChanges();
+            return like;
+
         }
 
         public ICollection<Like> GetAll()
