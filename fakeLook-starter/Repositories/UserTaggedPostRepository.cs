@@ -23,7 +23,7 @@ namespace fakeLook_starter.Repositories
             if (!TagExist(item))
             {
                 var res = _context.UserTaggedPosts.Add(item);
-                await _context.SaveChangesAsync();
+                 _context.SaveChanges();
                 return res.Entity;
             }
             return null;
@@ -32,7 +32,7 @@ namespace fakeLook_starter.Repositories
 
         private bool TagExist(UserTaggedPost item)
         {
-            var exist = _context.UserTaggedPosts.Where(p => p.UserId == item.UserId && p.PostId == item.PostId);
+            var exist = _context.UserTaggedPosts.Where(p => p.UserId == item.UserId && p.PostId == item.PostId).SingleOrDefault();
             return exist != null;
         }
 

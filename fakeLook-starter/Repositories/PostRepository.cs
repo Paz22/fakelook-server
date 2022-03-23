@@ -35,6 +35,7 @@ namespace fakeLook_starter.Repositories
         public async Task<Post> Add(Post item)
         {
             ICollection<Tag> varTags = new List<Tag>();
+            if(item.Tags!=null)
             for (var i = 0; i < item.Tags.Count; i++)
             {
                 varTags.Add(await _tagRepo.Add(item.Tags.ElementAt(i)));
@@ -68,17 +69,86 @@ namespace fakeLook_starter.Repositories
 
 
 
-        public async Task<Post> Edit(Post item) //TODO rewrite and split to cases!
+        public  async Task<Post> Edit(Post item) //TODO rewrite and split to cases!
         {
-            item.IsEdited = true;
-            var temp = _context.Posts.FirstOrDefault(u => u.Id == item.Id);
-            if (temp == null)
+            var existingPost = _context.Posts
+       .Where(p => p.Id == item.Id)
+       .Include(p => p.Tags)
+       .Include(p=>p.UserTaggedPost)
+       .SingleOrDefault();
+            if (existingPost != null)
             {
-                return null;//TODO
+                // Update parent
+                _context.Entry(existingPost).CurrentValues.SetValues(item);
+
             }
-            _context.Entry<Post>(temp).CurrentValues.SetValues(item);
-            await _context.SaveChangesAsync();
-            return _converter.DtoPost(item);
+            // Delete children
+            if(existingPost.Tags!=null)
+            foreach (var existingTags in existingPost.Tags.ToList())
+            {
+                if(item.Tags!=null)
+                if (!item.Tags.Any(c => c.Id == existingTags.Id))
+                    _context.Tags.Remove(existingTags);
+            }
+            if(existingPost.UserTaggedPost!=null)
+            foreach (var existingUserTag in existingPost.UserTaggedPost.ToList())
+            {
+                if (item.Tags != null)
+                    if (!item.Tags.Any(c => c.Id == existingUserTag.Id))
+                        _context.UserTaggedPosts.Remove(existingUserTag);
+            }
+
+            // Update and Insert children
+            if (item.Tags!=null)
+            foreach (var tag in item.Tags)
+            { 
+                var existingtag = existingPost.Tags
+                    .Where(c => c.Id == tag.Id && c.Id != default(int))
+                    .SingleOrDefault();
+
+                if (existingtag != null)
+                    // Update child
+                    _context.Entry(existingtag).CurrentValues.SetValues(tag);
+                else
+                {
+                    // Insert child
+                    var newTag = new Tag
+                    {
+                        Content = tag.Content
+                    };
+                    existingPost.Tags.Add(newTag);
+                }
+            }
+            //---------------------------------
+            if (item.UserTaggedPost != null)
+                foreach (var userTag in item.UserTaggedPost)
+                {
+                    
+                    var existingtag = existingPost.UserTaggedPost
+                        .Where(c => c.Id == userTag.Id && c.Id != default(int))
+                        .SingleOrDefault();
+
+                    if (existingtag != null)
+                        // Update child
+                        _context.Entry(existingtag).CurrentValues.SetValues(userTag);
+                    else
+                    {
+                        // Insert child
+                        var newUserTag = new UserTaggedPost
+                        {
+                            UserId = userTag.UserId,
+                            PostId = userTag.PostId
+                            
+
+                        };
+                        existingPost.UserTaggedPost.Add(newUserTag);
+                    }
+                }
+
+            _context.SaveChanges();
+            return existingPost;
+
+
         }
 
        
@@ -89,6 +159,7 @@ namespace fakeLook_starter.Repositories
                 .Include(p => p.Likes).ThenInclude(p => p.User)
                 .Include(p => p.User)
                 .Include(p => p.Comments).ThenInclude(c => c.User)
+                .Include(p=>p.Tags)
                 .Include(p => p.UserTaggedPost).ThenInclude(t => t.User)
                 .Select(dtoLogic).ToList();
         }
@@ -102,6 +173,7 @@ namespace fakeLook_starter.Repositories
                 .Include(p => p.Tags)
                 .Include(p => p.UserTaggedPost).ThenInclude(t => t.User)
                 .Select(p => dtoLogic(p))
+
                 .SingleOrDefault(p => p.Id == id);
         }
 
@@ -121,17 +193,19 @@ namespace fakeLook_starter.Repositories
                 dtoLike.User = _converter.DtoUser(l.User);
                 return dtoLike;
             }).ToArray();
-            //dtoPost.Tags = p.Tags.Select(c =>
-            //{
-            //    var dtoTag = _converter.DtoTag(c);
-            //    return dtoTag;
-            //}).ToArray();
+            dtoPost.Tags = p.Tags.Select(c =>
+            {
+                var dtoTag = _converter.DtoTag(c);
+                return dtoTag;
+            }).ToArray();
             dtoPost.UserTaggedPost = p.UserTaggedPost.Select(c =>
             {
                 var dtoUsersTaggedPost = _converter.DtoUserTaggedPost(c);
                 dtoUsersTaggedPost.User = _converter.DtoUser(c.User);
                 return dtoUsersTaggedPost;
             }).ToArray();
+            
+       
             return dtoPost;
         }
 
