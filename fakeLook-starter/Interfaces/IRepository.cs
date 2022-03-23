@@ -23,11 +23,17 @@ namespace fakeLook_starter.Interfaces
         public bool UserExists(string userName);
         public bool userNameTaken(string userName, int id);
 
+        //public User addBlocked(int blockerId, int blockedId);
+
+        //public ICollection<int> getAllBlockedByUser(int blockerId);
+
+
+        //public ICollection<User> getAllFriends(int blockerId);
+
 
     }
     public interface IPostRepository : IRepository<Post>
     {
         public string getUsernameById(int id);
-        ICollection<Block> getAllBlockedByUser(int userId);
     }
 }

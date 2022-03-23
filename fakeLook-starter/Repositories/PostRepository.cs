@@ -12,7 +12,7 @@ namespace fakeLook_starter.Repositories
     public class PostRepository : IPostRepository
     {
         readonly private DataContext _context;
-        private readonly IRepository<Comment> _commentRepo;
+        private readonly ICommentRepository _commentRepo;
         private readonly ILikeRepository _likeRepo;
         private readonly ITagsRepository _tagRepo;
         private readonly IUserTaggedPostRepository _userTaggedPostRepo;
@@ -21,7 +21,7 @@ namespace fakeLook_starter.Repositories
 
         private IDtoConverter _converter;
         public PostRepository(DataContext context, IDtoConverter dtoConverter, IUserTaggedPostRepository userTaggedrepo,
-          ITagsRepository tagsRepo, ILikeRepository likeRepo, IRepository<Comment> commentsRepo)
+          ITagsRepository tagsRepo, ILikeRepository likeRepo, ICommentRepository commentsRepo)
         {
             _context = context;
             _converter = dtoConverter;
@@ -56,23 +56,6 @@ namespace fakeLook_starter.Repositories
             {
                 return null;
             }
-            foreach (UserTaggedPost userTagged in post.UserTaggedPost)
-            {
-                await _userTaggedPostRepo.Delete(userTagged.Id);
-            }
-            foreach (Like like in post.Likes)
-            {
-                await _likeRepo.Delete(like.Id);
-            }
-            foreach (Comment comment in post.Comments)
-            {
-                foreach (UserTaggedComment userTaggedComment in comment.UserTaggedComment)
-                {
-                    await _userTaggedCommentRepo.Delete(userTaggedComment.Id);
-                }
-                await _commentRepo.Delete(comment.Id);
-            }
-
             _context.Posts.Remove(post);
             await _context.SaveChangesAsync();
             return _converter.DtoPost(post);
@@ -98,10 +81,7 @@ namespace fakeLook_starter.Repositories
             return _converter.DtoPost(item);
         }
 
-        public ICollection<Block> getAllBlockedByUser(int id)
-        {
-            return _context.Blocks.Where(p => p.BlockerUserId == id).ToList();
-        }
+       
 
         public ICollection<Post> GetAll()
         {
@@ -121,7 +101,7 @@ namespace fakeLook_starter.Repositories
                 .Include(p => p.Comments).ThenInclude(c => c.User)
                 .Include(p => p.Tags)
                 .Include(p => p.UserTaggedPost).ThenInclude(t => t.User)
-                //.Select(p => dtoLogic(p))
+                .Select(p => dtoLogic(p))
                 .SingleOrDefault(p => p.Id == id);
         }
 
@@ -160,7 +140,7 @@ namespace fakeLook_starter.Repositories
 
         public ICollection<Post> GetByPredicate(Func<Post, bool> predicate)
         {
-            return _context.Posts.Where(predicate).ToList();
+            return _context.Posts.Include(p=>p.Tags).Include(p=>p.UserTaggedPost).Where(predicate).ToList();
         }
     }
 }

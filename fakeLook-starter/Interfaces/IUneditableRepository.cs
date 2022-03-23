@@ -31,4 +31,7 @@ namespace fakeLook_starter.Interfaces
 
         bool TagExist(string content);
     }
+
+
+
 }
