@@ -40,6 +40,10 @@ namespace fakeLook_starter.Repositories
             {
                 return item;//TODO
             }
+            else if (userNameTaken(item.UserName, item.Id))
+            {
+                return item;
+            }
             else
             {
                 var res = _context.Users.Add(item);
@@ -56,21 +60,59 @@ namespace fakeLook_starter.Repositories
 
         public bool userNameTaken(string userName,int id)
         {
-            var res = _context.Users.Where(item => item.UserName == userName && item.Id!=id).SingleOrDefault();
+            var res = _context.Users.Where(item => item.UserName == userName && item.Id!=id).FirstOrDefault();
             return res != null;
         }
+
+
+       
+        //public User addBlocked(int blockerId, int blockedId)
+        //{
+        //    var user = GetById(blockerId);
+        //    user.blocked.Add(blockedId);
+        //    _context.Entry<User>(user).CurrentValues.SetValues(user);
+        //    _context.SaveChanges();
+        //    return user;
+        //}
+
+      
+        //public ICollection<int> getAllBlockedByUser(int blockerId)
+        //{
+        //    var user = GetById(blockerId);
+        //    return (user.blocked);
+        //}
+
+       
+        //public ICollection<User> getAllFriends(int blockerId)
+        //{
+        //    ICollection<User> friendsOnly = new List<User>();
+        //    var allusers = GetAll();
+        //    var user = GetById(blockerId);
+        //    for (int i = 0; i < allusers.Count; i++)
+        //    {
+        //        if (!user.blocked.Contains(allusers.ElementAt(i).Id))
+        //        {
+        //            friendsOnly.Add(allusers.ElementAt(i));
+        //        }
+        //    }
+        //    return friendsOnly;
+        //}
 
 
 
         public async Task<User> Edit(User item)
         {
+            if(userNameTaken(item.UserName, item.Id))
+            {
+                return null;
+            }
             var temp = _context.Users.FirstOrDefault(u => u.Id == item.Id);
             if (temp == null)
             {
                 return null;//TODO
             }
             _context.Entry<User>(temp).CurrentValues.SetValues(item);
-            await _context.SaveChangesAsync();
+             _context.SaveChanges();
             if (!UserExists(item.UserName))
             {
                 //TODO

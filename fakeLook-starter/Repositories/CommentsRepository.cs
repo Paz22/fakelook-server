@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace fakeLook_starter.Repositories
 {
-    public class CommentsRepository : IRepository<Comment>
+    public class CommentsRepository : ICommentRepository
     {
 
         readonly private DataContext _context;
@@ -49,11 +49,7 @@ namespace fakeLook_starter.Repositories
             return removed.Entity;
         }
 
-        public Task<Comment> Edit(Comment item)
-        {
-            throw new System.NotImplementedException();
-        }
-
+      
         public ICollection<Comment> GetAll()
         {
             return _context.Comments.ToList();

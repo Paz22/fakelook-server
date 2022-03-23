@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,7 +35,11 @@ namespace fakeLook_models.Models
         public virtual ICollection<UserTaggedPost> UserTaggedPost { get; set; }
         public virtual ICollection<UserTaggedComment> UserTaggedComment { get; set; }
 
-        public virtual ICollection<Block> blockedUser { get; set; }
+        //[NotMapped]
+        public ICollection<int> blocked = new List<int>();
+
+
+
     }
 
 }

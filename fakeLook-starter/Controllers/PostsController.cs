@@ -72,33 +72,32 @@ namespace fakeLook_starter.Controllers
             return _repo.Delete(id);
         }
 
-        [HttpGet]
-        [Route("GetPostsByFilteredBlocked")]
-        [TypeFilter(typeof(GetUserActionFilter))]
-        public IEnumerable<Post> GetFriendsPosts(int userId)
-        {
-            ICollection<Post> allPosts=_repo.GetAll();
-            ICollection<Block> blocked = _repo.getAllBlockedByUser(userId);
-            IEnumerable<int> blockedId = blocked.Select(x => x.BlockedUserId);
-            return allPosts.Where(p => !blockedId.Contains(p.UserId));
-        }
+        //[HttpGet]
+        //[Route("GetPostsByFilteredBlocked")]
+        //[TypeFilter(typeof(GetUserActionFilter))]
+        //public IEnumerable<Post> GetFriendsPosts(int userId)
+        //{
+        //    ICollection<Post> allPosts=_repo.GetAll();
+        //    ICollection<Block> blocked = _repo.getAllBlockedByUser(userId);
+        //    IEnumerable<int> blockedId = blocked.Select(x => x.BlockedUserId);
+        //    return allPosts.Where(p => !blockedId.Contains(p.UserId));
+        //}
 
 
 
         [HttpPost]
         [Route("Filter")]
-        public async Task<Post> Filter(Filter filter)
+        public ICollection<Post> Filter(Filter filter)
         {
             var res = _repo.GetByPredicate(post =>
             {
-
-                bool taggs = checkTaggs(post.Tags, filter.tags);
+                bool tags = checkTags(post.Tags, filter.tags);
                 bool taggedUsers = checkTagged(post.UserTaggedPost, filter.taggedUsers);
                 bool publishers = checkPublishers(post.UserId, filter.Publishers);
                 bool date = checkDate(post.Date, filter.startingDate, filter.endingDate);
-                return date && publishers && taggedUsers && taggedUsers;
+                return date && publishers && tags && taggedUsers;
             });
-            return null;
+            return res;
         }
         private bool checkDate(DateTime postDate, Nullable<DateTime> startingDate, Nullable<DateTime> endingDate)
         {
@@ -113,7 +112,7 @@ namespace fakeLook_starter.Controllers
             }
             else if (startingDate.HasValue && !endingDate.HasValue)
             {
-                date = (postDate <= startingDate);
+                date = (postDate >= startingDate);
             }
             else
             {
@@ -131,13 +130,17 @@ namespace fakeLook_starter.Controllers
             var userName = _repo.getUsernameById(userId);
             return publishers.Contains(userName);
         }
-        private bool checkTaggs(ICollection<Tag> postTags, ICollection<string> taggs)
+        private bool checkTags(ICollection<Tag> postTags, ICollection<string> tags)
         {
-            if (postTags==null)
+            if (tags==null)
             {
                 return true;
             }
-            foreach (var tag in taggs)
+            if(postTags == null)
+            {
+                return false;
+            }
+            foreach (var tag in tags)
             {
                 foreach (var postTag in postTags)
                 {
@@ -152,13 +155,19 @@ namespace fakeLook_starter.Controllers
 
         private bool checkTagged(ICollection<UserTaggedPost> taggedPost, ICollection<string> taggedFilter)
         {
-            if (taggedFilter.Count == 0 || taggedPost==null)
+            if (taggedFilter == null || taggedFilter.Count == 0)
             {
                 return true;
             }
+            if (taggedFilter.Count > 0 && taggedPost == null)
+            {
+                return false;
+            }
+
             foreach (var postTag in taggedPost)
             {
-                if (taggedFilter.Contains(postTag.User.UserName))
+                var userName = _repo.getUsernameById(postTag.UserId);
+                if (taggedFilter.Contains(userName))
                 {
                     return true;
                 }

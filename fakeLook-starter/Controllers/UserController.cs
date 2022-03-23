@@ -6,6 +6,7 @@ using fakeLook_starter.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -42,6 +43,8 @@ namespace fakeLook_starter.Controllers
             return _repo.GetById(id);
         }
 
+    
+
         // POST api/<User>
         [HttpPost]
         [Route("Post")]
@@ -67,9 +70,9 @@ namespace fakeLook_starter.Controllers
         // PUT api/<User>/5
         [HttpPut]
         [Route("Put")]
-        public void Put(User user)
+        public Task<User> Put(User user)
         {
-            _repo.Edit(user);
+            return _repo.Edit(user);
         }
 
         [HttpPost]
@@ -83,14 +86,32 @@ namespace fakeLook_starter.Controllers
             }
             var token = _tokenService.CreateToken(dbUser);
             return Ok(new{ token,dbUser.Id,dbUser.UserName,dbUser.ProfilePic});
-
-
         }
+
+        //[HttpPost]
+        //[Route("addBlocked")]
+        //public User addBlocked(int blockerId,int blockedId)
+        //{
+        //    return _repo.addBlocked(blockerId, blockedId);
+        //}
+
+        //[HttpGet]
+        //[Route("getBlocked")]
+        //public ICollection<int> getAllBlockedByUser(int blockerId)
+        //{
+        //    return _repo.getAllBlockedByUser(blockerId);
+        //}
+
+        //[HttpGet]
+        //[Route("getAllFriends")]
+        //public ICollection<User> getAllFriends(int blockerId)
+        //{
+        //    return _repo.getAllFriends(blockerId);
+        //}
 
         // DELETE api/<User>/5
         [HttpDelete]
         [Route("Delete")]
-
         public void DeleteUser(int id)
         {
             _repo.Delete(id);
@@ -112,6 +133,27 @@ namespace fakeLook_starter.Controllers
         {
             return _repo.userNameTaken(userName,id);
         }
+
+        //[HttpPost]
+        //[Route("getFriendsNotBlocked")]
+        //public ICollection<User> getFriendsNotBlocked(int userId)
+        //{
+        //    ICollection<User> notBlocked=new List<User>();
+        //    IList<User> allUsers= (IList<User>)GetAllUsers();
+        //    var allBlocked=GetById(userId).blockedUser;
+        //    for (int i=0;i<allUsers.Count;i++)
+        //    {
+        //        for (int j = 0; j < allBlocked.Count; j++)
+        //        {
+        //            if(allUsers.ElementAt(i).Id!=allBlocked.ElementAt(j).BlockedUserId)
+        //            {
+        //                notBlocked.Add(allUsers.ElementAt(i));
+        //            }
+        //        }
+        //    }
+        //    return notBlocked;
+        //}
+
 
     }
 }

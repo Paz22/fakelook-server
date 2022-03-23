@@ -64,7 +64,7 @@ namespace fakeLook_starter
 
             services.AddScoped<IDtoConverter, DtoConverter>();
             services.AddScoped<ILikeRepository, LikesRepository>();
-            services.AddScoped<IRepository<Comment>, CommentsRepository>();
+            services.AddScoped<ICommentRepository, CommentsRepository>();
             services.AddScoped<IUserTaggedCommentRepository, UserTaggedCommentRepository>();
             services.AddScoped<IUserTaggedPostRepository, UserTaggedPostRepository>();
             services.AddScoped<ITagsRepository, TagsRepository>();
