@@ -9,8 +9,8 @@ namespace fakeLook_models.Models
     public class Filter
     {
         public ICollection<string> Publishers { get; set; }
-        public DateTime startingDate { get; set; }
-        public DateTime endingDate { get; set; }
+        public DateTime? startingDate { get; set; } = null;
+        public DateTime? endingDate { get; set; } = null;
         public ICollection<string> tags { get; set; }
         public ICollection<string> taggedUsers { get; set; }
     }
